@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
+import { DatabaseModule } from 'src/config/database/db.module';
 import { CreateUserService } from './services/createUser.service';
-import { UserRepository } from '../main/config/db/repositories/users/UserRepository';
-import { UserRepositoryInPrisma } from '../main/config/db/repositories/users/UserRepositoryInPrisma';
-import { DatabaseModule } from 'src/main/config/db/db.module';
 import { ListUsersService } from './services/listUser.service';
 import { UpdateUserService } from './services/updateUser.service';
+import { UsersController } from './users.controller';
+import { HashService } from 'src/utils/hash/hash.service';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [UsersController],
-  providers: [CreateUserService, ListUsersService, UpdateUserService],
+  providers: [CreateUserService, ListUsersService, UpdateUserService, HashService],
 })
-export class UsersModule {}
+export class UsersModule { }

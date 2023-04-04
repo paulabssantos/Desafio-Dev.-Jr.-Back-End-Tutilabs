@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { UserRepository } from '../../main/config/db/repositories/users/UserRepository';
+import { UserRepository } from 'src/config/database/repositories/users/UserRepository';
 
 @Injectable()
 export class UpdateUserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) { }
   async execute(
     id: string,
     { email, fk_roles, name, password }: UpdateUserDto,
