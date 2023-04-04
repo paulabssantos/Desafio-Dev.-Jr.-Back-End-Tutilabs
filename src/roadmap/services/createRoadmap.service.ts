@@ -7,9 +7,9 @@ import { transporter } from "src/config/nodemailer-config";
 export class CreateRoadmapService {
     constructor(private roadmapRepository: RoadmapRepository) { }
 
-    async execute(createRoadmapDto: CreateRoadmapDto) {
+    async execute(file: Express.Multer.File, createRoadmapDto: CreateRoadmapDto) {
         await this.roadmapRepository.create(createRoadmapDto)
 
-        transporter.sendMail({ envelope: { to: 'paulabia2001@gmail.com' }, subject: "Novo roteiro criado", html: "<p>Novo roteiro criado<p>" })
+        transporter.sendMail({ envelope: { to: 'paulabia2001@gmail.com' }, subject: "Novo roteiro criado", html: "<p>Novo roteiro criado<p>", attachments: [file] })
     }
 }

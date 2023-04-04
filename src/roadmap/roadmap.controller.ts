@@ -10,7 +10,7 @@ export class RoadmapController {
   @Post()
   @UseInterceptors(FileInterceptor('file', multerConfig))
   create(@UploadedFile() file: Express.Multer.File, @Body() { descricao, fk_risk, fk_produtora, orcamento_proposto, title }: CreateRoadmapDto) {
-    return this.createRoadmapService.execute({ descricao, file: file.path, fk_produtora, fk_risk, orcamento_proposto: Number(orcamento_proposto), title });
+    return this.createRoadmapService.execute(file, { descricao, file: file.path, fk_produtora, fk_risk, orcamento_proposto: Number(orcamento_proposto), title });
   }
 
   // @Get()
