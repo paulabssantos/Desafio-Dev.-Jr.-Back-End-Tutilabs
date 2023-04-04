@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,12 +10,14 @@ datasource db {
 model users {
   id           String         @id @default(uuid())
   name         String
-  role         roles          @relation(fields: [fk_roles], references: [id])
-  fk_roles     String
   password     String
-  email        String         @unique()
-  roadmap      roadmap[]
+  email        String         @unique
+  fk_roles     String
   homologation homologation[]
+  roadmap      roadmap[]
+  role         roles          @relation(fields: [fk_roles], references: [id])
+
+  @@index([fk_roles], map: "users_fk_roles_fkey")
 }
 
 model roles {
@@ -39,11 +38,14 @@ model roadmap {
   descricao          String
   orcamento_proposto Float
   file               String
-  produtora          users          @relation(fields: [fk_produtora], references: [id])
   fk_produtora       String
-  risk               risk           @relation(fields: [fk_risk], references: [id])
   fk_risk            String
   homologation       homologation[]
+  produtora          users          @relation(fields: [fk_produtora], references: [id])
+  risk               risk           @relation(fields: [fk_risk], references: [id])
+
+  @@index([fk_produtora], map: "roadmap_fk_produtora_fkey")
+  @@index([fk_risk], map: "roadmap_fk_risk_fkey")
 }
 
 model status {
@@ -54,11 +56,15 @@ model status {
 
 model homologation {
   id              String  @id @default(uuid())
-  roadmap         roadmap @relation(fields: [fk_roadmap], references: [id])
   fk_roadmap      String
-  status          status  @relation(fields: [fk_status], references: [id])
   fk_status       String
-  parecer         String
-  fk_screenwriter users   @relation(fields: [createdBy], references: [id])
+  parecer         String?
   createdBy       String
+  fk_screenwriter users   @relation(fields: [createdBy], references: [id])
+  roadmap         roadmap @relation(fields: [fk_roadmap], references: [id])
+  status          status  @relation(fields: [fk_status], references: [id])
+
+  @@index([createdBy], map: "homologation_createdBy_fkey")
+  @@index([fk_roadmap], map: "homologation_fk_roadmap_fkey")
+  @@index([fk_status], map: "homologation_fk_status_fkey")
 }
