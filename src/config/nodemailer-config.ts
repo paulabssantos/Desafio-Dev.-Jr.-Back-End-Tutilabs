@@ -7,8 +7,8 @@ const transporter = createTransport({
         rejectUnauthorized: true,
     },
     auth: {
-        user: 'pb.santos@icomp.ufam.edu.br',
-        pass: '982239102',
+        user: process.env.EMAIL,
+        pass: process.env.SENHA,
     },
 });
 
