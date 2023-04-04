@@ -1,11 +1,13 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'src/config/multer-config';
 import { CreateRoadmapDto } from './dto/create-roadmap.dto';
+import { UpdateRoadmapDto } from './dto/update-roadmap.dto';
 import { CreateRoadmapService } from './services/createRoadmap.service';
+import { UpdateRoadmapService } from './services/updateRoadmap.service';
 @Controller('roadmap')
 export class RoadmapController {
-  constructor(private readonly createRoadmapService: CreateRoadmapService) { }
+  constructor(private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('file', multerConfig))
@@ -23,10 +25,11 @@ export class RoadmapController {
   //   return this.roadmapService.findOne(+id);
   // }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateRoadmapDto: UpdateRoadmapDto) {
-  //   return this.roadmapService.update(+id, updateRoadmapDto);
-  // }
+  @Put(':id')
+  @UseInterceptors(FileInterceptor('file', multerConfig))
+  update(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @Body() { descricao, fk_produtora, fk_risk, orcamento_proposto, title }: UpdateRoadmapDto) {
+    return this.updateRoadmapService.execute(id, { descricao, file: file.path, fk_produtora, fk_risk, orcamento_proposto: Number(orcamento_proposto), title });
+  }
 
   // @Delete(':id')
   // remove(@Param('id') id: string) {

@@ -26,8 +26,15 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
             }
         })
     }
-    update(updateRoadmapDto: UpdateRoadmapDto): Promise<void> {
-        throw new Error("Method not implemented.");
+    async update(id: string, { descricao, file, fk_produtora, fk_risk, orcamento_proposto, title }: UpdateRoadmapDto): Promise<void> {
+        await this.prisma.roadmap.update({
+            data: {
+                descricao, file, fk_produtora, fk_risk, orcamento_proposto, title
+            },
+            where: {
+                id
+            }
+        })
     }
     list(): Promise<Roadmap[]> {
         throw new Error("Method not implemented.");
