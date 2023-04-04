@@ -13,10 +13,10 @@ datasource db {
 model users {
   id       String    @id @default(uuid())
   name     String
-  fk_roles roles     @relation(fields: [role], references: [id])
-  role     String
-  password String
-  email    String
+  role roles     @relation(fields: [fk_roles], references: [id])
+  fk_roles     String
+  password String 
+  email    String @unique()
   roadmap  roadmap[]
 }
 
