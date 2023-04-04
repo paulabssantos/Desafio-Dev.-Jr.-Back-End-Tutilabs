@@ -16,7 +16,13 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
                 orcamento_proposto,
                 title,
                 fk_produtora,
-                fk_risk
+                fk_risk,
+                homologation: {
+                    create: {
+                        fk_status: '3',
+                        createdBy: '9da6c272-5595-4b1b-8aaa-62d27b0a633f'
+                    }
+                }
             }
         })
     }
