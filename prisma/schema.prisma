@@ -11,13 +11,14 @@ datasource db {
 }
 
 model users {
-  id       String    @id @default(uuid())
-  name     String
-  role roles     @relation(fields: [fk_roles], references: [id])
+  id           String         @id @default(uuid())
+  name         String
+  role         roles          @relation(fields: [fk_roles], references: [id])
   fk_roles     String
-  password String 
-  email    String @unique()
-  roadmap  roadmap[]
+  password     String
+  email        String         @unique()
+  roadmap      roadmap[]
+  homologation homologation[]
 }
 
 model roles {
@@ -52,10 +53,12 @@ model status {
 }
 
 model homologation {
-  id         String  @id @default(uuid())
-  roadmap    roadmap @relation(fields: [fk_roadmap], references: [id])
-  fk_roadmap String
-  status     status  @relation(fields: [fk_status], references: [id])
-  fk_status  String
-  parecer    String
+  id              String  @id @default(uuid())
+  roadmap         roadmap @relation(fields: [fk_roadmap], references: [id])
+  fk_roadmap      String
+  status          status  @relation(fields: [fk_status], references: [id])
+  fk_status       String
+  parecer         String
+  fk_screenwriter users   @relation(fields: [createdBy], references: [id])
+  createdBy       String
 }
