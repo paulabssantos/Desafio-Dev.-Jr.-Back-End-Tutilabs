@@ -4,6 +4,7 @@ import { CreateUserDto } from "src/users/dto/create-user.dto";
 import { UpdateUserDto } from "src/users/dto/update-user.dto";
 import { User } from "src/users/entities/user.entity";
 import { PrismaService } from "../../prisma/prisma.service";
+import { ListUserDto } from "src/users/dto/list-user.dto";
 
 @Injectable()
 export class UserRepositoryInPrisma implements UserRepository {
@@ -39,6 +40,16 @@ export class UserRepositoryInPrisma implements UserRepository {
         const data = await this.prisma.users.findUnique({
             where: {
                 email
+            }
+        })
+        return data
+    }
+
+    async find({ id, fk_roles }: ListUserDto): Promise<User> {
+        const data = await this.prisma.users.findFirst({
+            where: {
+                id,
+                fk_roles
             }
         })
         return data

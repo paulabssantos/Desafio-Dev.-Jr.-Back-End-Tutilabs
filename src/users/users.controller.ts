@@ -1,15 +1,15 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
-  Delete,
+  Post,
+  Put
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserService } from './services/createUser.service';
+import { FindUserService } from './services/findUser.service';
 import { ListUsersService } from './services/listUser.service';
 import { UpdateUserService } from './services/updateUser.service';
 
@@ -19,7 +19,8 @@ export class UsersController {
     private readonly createUserService: CreateUserService,
     private readonly listUsersService: ListUsersService,
     private readonly updateUserService: UpdateUserService,
-  ) {}
+    private readonly findUserProducerService: FindUserService,
+  ) { }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -31,12 +32,12 @@ export class UsersController {
     return this.listUsersService.execute();
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.usersService.findOne(+id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.findUserProducerService.execute({ id });
+  }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.updateUserService.execute(id, updateUserDto);
   }

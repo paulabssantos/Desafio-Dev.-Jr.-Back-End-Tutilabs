@@ -5,10 +5,11 @@ import { ListUsersService } from './services/listUser.service';
 import { UpdateUserService } from './services/updateUser.service';
 import { UsersController } from './users.controller';
 import { HashService } from 'src/utils/hash/hash.service';
+import { FindUserService } from './services/findUser.service';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [UsersController],
-  providers: [CreateUserService, ListUsersService, UpdateUserService, HashService],
+  providers: [CreateUserService, ListUsersService, UpdateUserService, FindUserService, HashService],
 })
 export class UsersModule { }
