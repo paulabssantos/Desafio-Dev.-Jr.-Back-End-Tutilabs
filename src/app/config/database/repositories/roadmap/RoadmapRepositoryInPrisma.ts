@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { RoadmapRepository } from "./RoadmapRepository";
-import { CreateRoadmapDto } from "src/roadmap/dto/create-roadmap.dto";
-import { UpdateRoadmapDto } from "src/roadmap/dto/update-roadmap.dto";
-import { Roadmap } from "src/roadmap/entities/roadmap.entity";
+import { CreateRoadmapDto } from "src/modules/roadmap/dto/create-roadmap.dto";
+import { UpdateRoadmapDto } from "src/modules/roadmap/dto/update-roadmap.dto";
+import { Roadmap } from "src/modules/roadmap/entities/roadmap.entity";
 import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()

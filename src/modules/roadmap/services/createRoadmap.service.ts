@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { RoadmapRepository } from "src/config/database/repositories/roadmap/RoadmapRepository";
+import { RoadmapRepository } from "src/app/config/database/repositories/roadmap/RoadmapRepository";
 import { CreateRoadmapDto } from "../dto/create-roadmap.dto";
-import { transporter } from "src/config/nodemailer-config";
-import { UserRepository } from "src/config/database/repositories/users/UserRepository";
+import { transporter } from "src/app/config/nodemailer-config";
+import { UserRepository } from "src/app/config/database/repositories/users/UserRepository";
 
 @Injectable()
 export class CreateRoadmapService {

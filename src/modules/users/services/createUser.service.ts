@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { UserRepository } from 'src/config/database/repositories/users/UserRepository';
-import { HashService } from 'src/utils/hash/hash.service';
+import { UserRepository } from 'src/app/config/database/repositories/users/UserRepository';
+import { Hash } from 'src/utils/hash/hash';
 
 @Injectable()
 export class CreateUserService {
-  constructor(private readonly userRepository: UserRepository, private readonly hashService: HashService) { }
+  constructor(private readonly userRepository: UserRepository, private readonly hashService: Hash) { }
   async execute({ email, fk_roles, name }: CreateUserDto) {
     if (email) {
       const email_exists = await this.userRepository.findByEmail(email);
@@ -16,7 +16,7 @@ export class CreateUserService {
         );
       }
     }
-    const hash_password = await this.hashService.execute('12345')
+    const hash_password = await this.hashService.hash('12345')
 
     return await this.userRepository.create({
       email,

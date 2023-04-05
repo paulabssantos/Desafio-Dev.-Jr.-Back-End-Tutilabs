@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { RoadmapRepository } from "src/config/database/repositories/roadmap/RoadmapRepository";
-import { UserRepository } from "src/config/database/repositories/users/UserRepository";
+import { RoadmapRepository } from "src/app/config/database/repositories/roadmap/RoadmapRepository";
+import { UserRepository } from "src/app/config/database/repositories/users/UserRepository";
 import { UpdateRoadmapDto } from "../dto/update-roadmap.dto";
 import * as fs from 'fs'
 @Injectable()

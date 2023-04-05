@@ -1,6 +1,6 @@
 import { Body, Controller, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { multerConfig } from 'src/config/multer-config';
+import { multerConfig } from 'src/app/config/multer-config';
 import { CreateRoadmapDto } from './dto/create-roadmap.dto';
 import { UpdateRoadmapDto } from './dto/update-roadmap.dto';
 import { CreateRoadmapService } from './services/createRoadmap.service';

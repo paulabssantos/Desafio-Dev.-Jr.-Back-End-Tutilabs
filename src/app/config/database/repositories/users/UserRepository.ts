@@ -1,7 +1,7 @@
-import { CreateUserDto } from "src/users/dto/create-user.dto";
-import { ListUserDto } from "src/users/dto/list-user.dto";
-import { UpdateUserDto } from "src/users/dto/update-user.dto";
-import { User } from "src/users/entities/user.entity";
+import { CreateUserDto } from "src/modules/users/dto/create-user.dto";
+import { ListUserDto } from "src/modules/users/dto/list-user.dto";
+import { UpdateUserDto } from "src/modules/users/dto/update-user.dto";
+import { User } from "src/modules/users/entities/user.entity";
 
 export abstract class UserRepository {
     abstract create(createUserDto: CreateUserDto): Promise<void>;
