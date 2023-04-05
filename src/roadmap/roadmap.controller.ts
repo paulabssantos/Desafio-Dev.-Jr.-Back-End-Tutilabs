@@ -1,10 +1,11 @@
-import { Body, Controller, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'src/config/multer-config';
 import { CreateRoadmapDto } from './dto/create-roadmap.dto';
 import { UpdateRoadmapDto } from './dto/update-roadmap.dto';
 import { CreateRoadmapService } from './services/createRoadmap.service';
 import { UpdateRoadmapService } from './services/updateRoadmap.service';
+import multer from 'multer';
 @Controller('roadmap')
 export class RoadmapController {
   constructor(private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService) { }
@@ -12,7 +13,13 @@ export class RoadmapController {
   @Post()
   @UseInterceptors(FileInterceptor('file', multerConfig))
   create(@UploadedFile() file: Express.Multer.File, @Body() { descricao, fk_risk, fk_produtora, orcamento_proposto, title }: CreateRoadmapDto) {
-    return this.createRoadmapService.execute(file, { descricao, file: file.path, fk_produtora, fk_risk, orcamento_proposto: Number(orcamento_proposto), title });
+    try {
+      return this.createRoadmapService.execute(file, { descricao, file: file ? file.path : undefined, fk_produtora, fk_risk, orcamento_proposto: Number(orcamento_proposto), title });
+    } catch (error) {
+      if (error instanceof multer.MulterError) {
+        throw new HttpException(`Erro no upload do arquivo - ${error.message}`, HttpStatus.UNPROCESSABLE_ENTITY)
+      }
+    }
   }
 
   // @Get()
@@ -28,7 +35,13 @@ export class RoadmapController {
   @Put(':id')
   @UseInterceptors(FileInterceptor('file', multerConfig))
   update(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @Body() { descricao, fk_produtora, fk_risk, orcamento_proposto, title }: UpdateRoadmapDto) {
-    return this.updateRoadmapService.execute(id, { descricao, file: file.path, fk_produtora, fk_risk, orcamento_proposto: Number(orcamento_proposto), title });
+    try {
+      return this.updateRoadmapService.execute(id, file, { descricao, file: file ? file.path : undefined, fk_produtora, fk_risk, orcamento_proposto: Number(orcamento_proposto), title });
+    } catch (error) {
+      if (error instanceof multer.MulterError) {
+        throw new HttpException(`Erro no upload do arquivo - ${error.message}`, HttpStatus.UNPROCESSABLE_ENTITY)
+      }
+    }
   }
 
   // @Delete(':id')
