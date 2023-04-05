@@ -9,6 +9,9 @@ export class CreateRoadmapService {
     constructor(private roadmapRepository: RoadmapRepository, private userRepository: UserRepository) { }
 
     async execute(file: Express.Multer.File, createRoadmapDto: CreateRoadmapDto) {
+        if (!file) {
+            throw new HttpException('Arquivo de roteiro é obrigatório', HttpStatus.BAD_REQUEST)
+        }
         const user = await this.userRepository.find({ id: createRoadmapDto.fk_produtora });
         if (user) {
             if (user.fk_roles != '2') {
