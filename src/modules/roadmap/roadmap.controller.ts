@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'src/app/config/multer-config';
 import { CreateRoadmapDto } from './dto/create-roadmap.dto';
@@ -6,9 +6,10 @@ import { UpdateRoadmapDto } from './dto/update-roadmap.dto';
 import { CreateRoadmapService } from './services/createRoadmap.service';
 import { UpdateRoadmapService } from './services/updateRoadmap.service';
 import multer from 'multer';
+import { ListRoadmapService } from './services/listRoadmap.service';
 @Controller('roadmap')
 export class RoadmapController {
-  constructor(private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService) { }
+  constructor(private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('file', multerConfig))
@@ -22,10 +23,10 @@ export class RoadmapController {
     }
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.roadmapService.findAll();
-  // }
+  @Get()
+  findAll() {
+    return this.listRoadMapService.execute();
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {
