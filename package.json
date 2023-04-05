@@ -27,6 +27,8 @@
     "@prisma/client": "^4.12.0",
     "bcrypt": "^5.1.0",
     "class-validator": "^0.14.0",
+    "crypto": "^1.0.1",
+    "fs": "^0.0.1-security",
     "nodemailer": "^6.9.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
