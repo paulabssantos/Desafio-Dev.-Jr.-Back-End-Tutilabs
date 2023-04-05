@@ -39,8 +39,13 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
     list(): Promise<Roadmap[]> {
         throw new Error("Method not implemented.");
     }
-    find(id: string): Promise<Roadmap> {
-        throw new Error("Method not implemented.");
+    async find(id: string): Promise<Roadmap> {
+        const data = await this.prisma.roadmap.findUnique({
+            where: {
+                id
+            }
+        })
+        return data
     }
     delete(id: string): Promise<void> {
         throw new Error("Method not implemented.");
