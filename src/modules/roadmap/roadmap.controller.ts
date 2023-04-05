@@ -7,9 +7,10 @@ import { CreateRoadmapService } from './services/createRoadmap.service';
 import { UpdateRoadmapService } from './services/updateRoadmap.service';
 import multer from 'multer';
 import { ListRoadmapService } from './services/listRoadmap.service';
+import { FindRoadmapService } from './services/findRoadMap.service';
 @Controller('roadmap')
 export class RoadmapController {
-  constructor(private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService) { }
+  constructor(private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService, private findRoadmapService: FindRoadmapService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('file', multerConfig))
@@ -28,10 +29,10 @@ export class RoadmapController {
     return this.listRoadMapService.execute();
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.roadmapService.findOne(+id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.findRoadmapService.execute(id)
+  }
 
   @Put(':id')
   @UseInterceptors(FileInterceptor('file', multerConfig))

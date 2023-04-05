@@ -57,6 +57,18 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
         const data = await this.prisma.roadmap.findUnique({
             where: {
                 id
+            },
+            include: {
+                homologation: {
+                    select: {
+                        status: {
+                            select: {
+                                id: true,
+                                description: true
+                            }
+                        }
+                    }
+                }
             }
         })
         return data

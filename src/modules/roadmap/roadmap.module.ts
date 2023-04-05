@@ -4,10 +4,11 @@ import { DatabaseModule } from 'src/app/config/database/db.module';
 import { CreateRoadmapService } from './services/createRoadmap.service';
 import { UpdateRoadmapService } from './services/updateRoadmap.service';
 import { ListRoadmapService } from './services/listRoadmap.service';
+import { FindRoadmapService } from './services/findRoadMap.service';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [RoadmapController],
-  providers: [CreateRoadmapService, UpdateRoadmapService, ListRoadmapService]
+  providers: [CreateRoadmapService, UpdateRoadmapService, ListRoadmapService, FindRoadmapService]
 })
 export class RoadmapModule { }
