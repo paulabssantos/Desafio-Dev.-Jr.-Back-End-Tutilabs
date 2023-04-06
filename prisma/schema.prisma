@@ -61,7 +61,7 @@ model homologation {
   parecer         String?
   createdBy       String
   fk_screenwriter users   @relation(fields: [createdBy], references: [id])
-  roadmap         roadmap @relation(fields: [fk_roadmap], references: [id])
+  roadmap         roadmap @relation(fields: [fk_roadmap], references: [id], onDelete: Cascade)
   status          status  @relation(fields: [fk_status], references: [id])
 
   @@index([createdBy], map: "homologation_createdBy_fkey")
