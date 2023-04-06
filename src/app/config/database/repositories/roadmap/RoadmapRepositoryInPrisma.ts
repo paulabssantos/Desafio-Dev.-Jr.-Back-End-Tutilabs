@@ -73,8 +73,12 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
         })
         return data
     }
-    delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async delete(id: string): Promise<void> {
+        await this.prisma.roadmap.delete({
+            where: {
+                id
+            }
+        })
     }
 
 }

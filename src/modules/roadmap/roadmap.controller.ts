@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'src/app/config/multer-config';
 import { CreateRoadmapDto } from './dto/create-roadmap.dto';
@@ -8,9 +8,10 @@ import { UpdateRoadmapService } from './services/updateRoadmap.service';
 import multer from 'multer';
 import { ListRoadmapService } from './services/listRoadmap.service';
 import { FindRoadmapService } from './services/findRoadMap.service';
+import { DeleteRoadmapService } from './services/deleteRoadmap.service';
 @Controller('roadmap')
 export class RoadmapController {
-  constructor(private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService, private findRoadmapService: FindRoadmapService) { }
+  constructor(private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService, private findRoadmapService: FindRoadmapService, private deleteRoadmapService: DeleteRoadmapService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('file', multerConfig))
@@ -46,8 +47,8 @@ export class RoadmapController {
     }
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.roadmapService.remove(+id);
-  // }
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.deleteRoadmapService.execute(id);
+  }
 }

@@ -5,10 +5,11 @@ import { CreateRoadmapService } from './services/createRoadmap.service';
 import { UpdateRoadmapService } from './services/updateRoadmap.service';
 import { ListRoadmapService } from './services/listRoadmap.service';
 import { FindRoadmapService } from './services/findRoadMap.service';
+import { DeleteRoadmapService } from './services/deleteRoadmap.service';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [RoadmapController],
-  providers: [CreateRoadmapService, UpdateRoadmapService, ListRoadmapService, FindRoadmapService]
+  providers: [CreateRoadmapService, UpdateRoadmapService, ListRoadmapService, FindRoadmapService, DeleteRoadmapService]
 })
 export class RoadmapModule { }
