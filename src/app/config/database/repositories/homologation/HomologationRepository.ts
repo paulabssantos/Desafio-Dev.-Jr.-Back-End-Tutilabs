@@ -4,5 +4,4 @@ import { Homologation } from "src/modules/homologation/entities/homologation.ent
 export abstract class HomologationRepository {
     abstract homologate(homologateRoadmapDto: HomologateRoadmapDto): Promise<void>
     abstract findById(id: string): Promise<Homologation>
-    abstract list(): Promise<void>
 }

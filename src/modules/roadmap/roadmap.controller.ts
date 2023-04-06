@@ -10,9 +10,10 @@ import { ListRoadmapService } from './services/listRoadmap.service';
 import { FindRoadmapService } from './services/findRoadMap.service';
 import { DeleteRoadmapService } from './services/deleteRoadmap.service';
 import { ListRoadmapDto } from './dto/list-roadmap.dto';
+import { ListHomologatedRoadmapsByProducerService } from './services/listHomologatedRoadmapsByProducer.service';
 @Controller('roadmap')
 export class RoadmapController {
-  constructor(private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService, private findRoadmapService: FindRoadmapService, private deleteRoadmapService: DeleteRoadmapService) { }
+  constructor(private readonly listHomologatedRoadmapsByProducerService: ListHomologatedRoadmapsByProducerService, private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService, private findRoadmapService: FindRoadmapService, private deleteRoadmapService: DeleteRoadmapService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('file', multerConfig))
@@ -29,6 +30,11 @@ export class RoadmapController {
   @Get()
   findAll() {
     return this.listRoadMapService.execute();
+  }
+
+  @Get("/homologated")
+  listHomologatedRoadmapsByProducer() {
+    return this.listHomologatedRoadmapsByProducerService.execute("a8554be9-0b22-4030-ab80-6e927b0ae20d")
   }
 
   @Get('/filter')

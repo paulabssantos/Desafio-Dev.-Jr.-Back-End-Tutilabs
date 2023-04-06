@@ -26,8 +26,5 @@ export class HomologationRepositoryInPrisma implements HomologationRepository {
             }
         })
     }
-    list(): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
 
 }
