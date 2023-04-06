@@ -15,9 +15,9 @@ export class RoadmapController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file', multerConfig))
-  create(@UploadedFile() file: Express.Multer.File, @Body() { descricao, fk_risk, fk_produtora, orcamento_proposto, title }: CreateRoadmapDto) {
+  create(@UploadedFile() file: Express.Multer.File, @Body() { description, fk_risk, fk_producer, proposed_budget, title }: CreateRoadmapDto) {
     try {
-      return this.createRoadmapService.execute(file, { descricao, file: file ? file.path : undefined, fk_produtora, fk_risk, orcamento_proposto: Number(orcamento_proposto), title });
+      return this.createRoadmapService.execute(file, { description, file: file ? file.path : undefined, fk_producer, fk_risk, proposed_budget: Number(proposed_budget), title });
     } catch (error) {
       if (error instanceof multer.MulterError) {
         throw new HttpException(`Erro no upload do arquivo - ${error.message}`, HttpStatus.UNPROCESSABLE_ENTITY)
@@ -37,9 +37,9 @@ export class RoadmapController {
 
   @Put(':id')
   @UseInterceptors(FileInterceptor('file', multerConfig))
-  update(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @Body() { descricao, fk_produtora, fk_risk, orcamento_proposto, title }: UpdateRoadmapDto) {
+  update(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @Body() { description, fk_producer, fk_risk, proposed_budget, title }: UpdateRoadmapDto) {
     try {
-      return this.updateRoadmapService.execute(id, file, { descricao, file: file ? file.path : undefined, fk_produtora, fk_risk, orcamento_proposto: Number(orcamento_proposto), title });
+      return this.updateRoadmapService.execute(id, file, { description, file: file ? file.path : undefined, fk_producer, fk_risk, proposed_budget: Number(proposed_budget), title });
     } catch (error) {
       if (error instanceof multer.MulterError) {
         throw new HttpException(`Erro no upload do arquivo - ${error.message}`, HttpStatus.UNPROCESSABLE_ENTITY)

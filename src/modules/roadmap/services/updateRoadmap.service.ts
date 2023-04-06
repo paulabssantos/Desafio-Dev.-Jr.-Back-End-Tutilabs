@@ -25,8 +25,8 @@ export class UpdateRoadmapService {
         if (file) {
             deleteFile(roadmap.file)
         }
-        if (updateRoadmapDto.fk_produtora) {
-            const user = await this.userRepository.find({ id: updateRoadmapDto.fk_produtora });
+        if (updateRoadmapDto.fk_producer) {
+            const user = await this.userRepository.find({ id: updateRoadmapDto.fk_producer });
             if (user) {
                 if (user.fk_roles != '2') {
                     deleteFile(file.path)

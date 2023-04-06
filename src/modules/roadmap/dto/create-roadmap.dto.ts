@@ -1,8 +1,8 @@
 export class CreateRoadmapDto {
     title: string;
-    descricao: string;
-    orcamento_proposto: number;
+    description: string;
+    proposed_budget: number;
     file: string;
     fk_risk: string;
-    fk_produtora: string;
+    fk_producer: string;
 }

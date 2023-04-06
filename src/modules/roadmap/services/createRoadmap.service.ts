@@ -12,7 +12,7 @@ export class CreateRoadmapService {
         if (!file) {
             throw new HttpException('Arquivo de roteiro é obrigatório', HttpStatus.BAD_REQUEST)
         }
-        const user = await this.userRepository.find({ id: createRoadmapDto.fk_produtora });
+        const user = await this.userRepository.find({ id: createRoadmapDto.fk_producer });
         if (user) {
             if (user.fk_roles != '2') {
                 throw new HttpException('Usuário precisa ser uma produtora', HttpStatus.BAD_REQUEST)

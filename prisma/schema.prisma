@@ -33,18 +33,18 @@ model risk {
 }
 
 model roadmap {
-  id                 String         @id @default(uuid())
-  title              String
-  descricao          String
-  orcamento_proposto Float
-  file               String
-  fk_produtora       String
-  fk_risk            String
-  homologation       homologation[]
-  produtora          users          @relation(fields: [fk_produtora], references: [id])
-  risk               risk           @relation(fields: [fk_risk], references: [id])
+  id              String         @id @default(uuid())
+  title           String
+  description     String
+  proposed_budget Float
+  file            String
+  fk_producer     String
+  fk_risk         String
+  homologation    homologation[]
+  producer        users          @relation(fields: [fk_producer], references: [id])
+  risk            risk           @relation(fields: [fk_risk], references: [id])
 
-  @@index([fk_produtora], map: "roadmap_fk_produtora_fkey")
+  @@index([fk_producer], map: "roadmap_fk_produtora_fkey")
   @@index([fk_risk], map: "roadmap_fk_risk_fkey")
 }
 
@@ -58,7 +58,7 @@ model homologation {
   id              String  @id @default(uuid())
   fk_roadmap      String
   fk_status       String
-  parecer         String?
+  comment         String?
   createdBy       String
   fk_screenwriter users   @relation(fields: [createdBy], references: [id])
   roadmap         roadmap @relation(fields: [fk_roadmap], references: [id], onDelete: Cascade)

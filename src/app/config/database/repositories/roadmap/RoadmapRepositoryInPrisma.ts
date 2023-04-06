@@ -8,14 +8,14 @@ import { PrismaService } from "../../prisma/prisma.service";
 @Injectable()
 export class RoadmapRepositoryInPrisma implements RoadmapRepository {
     constructor(private prisma: PrismaService) { }
-    async create({ descricao, file, fk_produtora, orcamento_proposto, fk_risk, title }: CreateRoadmapDto): Promise<void> {
+    async create({ description, file, fk_producer, proposed_budget, fk_risk, title }: CreateRoadmapDto): Promise<void> {
         await this.prisma.roadmap.create({
             data: {
-                descricao,
+                description,
                 file,
-                orcamento_proposto,
+                proposed_budget,
                 title,
-                fk_produtora,
+                fk_producer,
                 fk_risk,
                 homologation: {
                     create: {
@@ -26,10 +26,10 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
             }
         })
     }
-    async update(id: string, { descricao, file, fk_produtora, fk_risk, orcamento_proposto, title }: UpdateRoadmapDto): Promise<void> {
+    async update(id: string, { description, file, fk_producer, fk_risk, proposed_budget, title }: UpdateRoadmapDto): Promise<void> {
         await this.prisma.roadmap.update({
             data: {
-                descricao, file, fk_produtora, fk_risk, orcamento_proposto, title
+                description, file, fk_producer, fk_risk, proposed_budget, title
             },
             where: {
                 id
