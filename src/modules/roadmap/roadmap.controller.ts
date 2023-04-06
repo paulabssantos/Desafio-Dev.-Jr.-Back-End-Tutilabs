@@ -9,6 +9,7 @@ import multer from 'multer';
 import { ListRoadmapService } from './services/listRoadmap.service';
 import { FindRoadmapService } from './services/findRoadMap.service';
 import { DeleteRoadmapService } from './services/deleteRoadmap.service';
+import { ListRoadmapDto } from './dto/list-roadmap.dto';
 @Controller('roadmap')
 export class RoadmapController {
   constructor(private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService, private findRoadmapService: FindRoadmapService, private deleteRoadmapService: DeleteRoadmapService) { }
@@ -30,9 +31,9 @@ export class RoadmapController {
     return this.listRoadMapService.execute();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.findRoadmapService.execute(id)
+  @Get('/filter')
+  filter(@Body() { fk_status, description, fk_producer, fk_risk, max_proposed_budget, min_proposed_budget, title }: ListRoadmapDto) {
+    return this.findRoadmapService.execute({ fk_status, description, fk_producer, fk_risk, max_proposed_budget, min_proposed_budget, title })
   }
 
   @Put(':id')

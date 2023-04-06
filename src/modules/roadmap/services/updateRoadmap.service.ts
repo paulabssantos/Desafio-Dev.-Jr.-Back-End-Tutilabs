@@ -16,7 +16,7 @@ export class UpdateRoadmapService {
             })
         }
 
-        const roadmap = await this.roadmapRepository.find(id)
+        const roadmap = await this.roadmapRepository.findById(id)
 
         if (!roadmap) {
             deleteFile(file.path)

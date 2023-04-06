@@ -6,7 +6,7 @@ export class DeleteRoadmapService {
     constructor(private roadmapRepository: RoadmapRepository) { }
 
     async execute(id: string) {
-        const roadmap = await this.roadmapRepository.find(id)
+        const roadmap = await this.roadmapRepository.findById(id)
 
         if (!roadmap) {
             throw new HttpException('Roteiro não encontrado', HttpStatus.NOT_FOUND)

@@ -4,10 +4,19 @@ import { CreateRoadmapDto } from "src/modules/roadmap/dto/create-roadmap.dto";
 import { UpdateRoadmapDto } from "src/modules/roadmap/dto/update-roadmap.dto";
 import { Roadmap } from "src/modules/roadmap/entities/roadmap.entity";
 import { PrismaService } from "../../prisma/prisma.service";
+import { ListRoadmapDto } from "src/modules/roadmap/dto/list-roadmap.dto";
 
 @Injectable()
 export class RoadmapRepositoryInPrisma implements RoadmapRepository {
     constructor(private prisma: PrismaService) { }
+    async findById(id: string): Promise<Roadmap> {
+        const data = await this.prisma.roadmap.findUnique({
+            where: {
+                id
+            }
+        })
+        return data
+    }
     async create({ description, file, fk_producer, proposed_budget, fk_risk, title }: CreateRoadmapDto): Promise<void> {
         await this.prisma.roadmap.create({
             data: {
@@ -20,7 +29,7 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
                 homologation: {
                     create: {
                         fk_status: '3',
-                        createdBy: '9da6c272-5595-4b1b-8aaa-62d27b0a633f'
+                        createdBy: 'a8554be9-0b22-4030-ab80-6e927b0ae20d'
                     }
                 }
             }
@@ -53,10 +62,24 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
         })
         return data
     }
-    async find(id: string): Promise<Roadmap> {
-        const data = await this.prisma.roadmap.findUnique({
+    async filter({ description, fk_producer, fk_risk, max_proposed_budget, min_proposed_budget, title, fk_status }: ListRoadmapDto): Promise<Roadmap[]> {
+        const data = await this.prisma.roadmap.findMany({
             where: {
-                id
+                description: {
+                    contains: description
+                },
+                fk_producer,
+                fk_risk,
+                proposed_budget: {
+                    gte: min_proposed_budget,
+                    lte: max_proposed_budget
+                },
+                title: {
+                    startsWith: title
+                },
+                homologation: {
+                    fk_status
+                }
             },
             include: {
                 homologation: {
