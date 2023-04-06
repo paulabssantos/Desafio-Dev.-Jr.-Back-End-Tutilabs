@@ -78,7 +78,9 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
                     startsWith: title
                 },
                 homologation: {
-                    fk_status
+                    every: {
+                        fk_status
+                    }
                 }
             },
             include: {
