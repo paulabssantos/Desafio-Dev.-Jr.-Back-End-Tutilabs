@@ -9,15 +9,13 @@ import { ListRoadmapDto } from "src/modules/roadmap/dto/list-roadmap.dto";
 @Injectable()
 export class RoadmapRepositoryInPrisma implements RoadmapRepository {
     constructor(private prisma: PrismaService) { }
-    async listHomologatedByProducer(fk_producer: string): Promise<Roadmap[]> {
+    async listHomologatedByProducer({ fk_producer, fk_status }: ListRoadmapDto): Promise<Roadmap[]> {
         const data = await this.prisma.roadmap.findMany({
             where: {
                 fk_producer,
                 homologation: {
                     every: {
-                        fk_status: {
-                            in: ['1', '2']
-                        }
+                        fk_status: !fk_status ? { notIn: ['3'] } : fk_status,
                     }
                 }
             }

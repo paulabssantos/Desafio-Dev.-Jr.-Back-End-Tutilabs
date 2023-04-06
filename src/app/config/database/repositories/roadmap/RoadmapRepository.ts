@@ -10,5 +10,5 @@ export abstract class RoadmapRepository {
     abstract filter(listRoadmapDto: ListRoadmapDto): Promise<Roadmap[]>
     abstract findById(id: string): Promise<Roadmap>
     abstract delete(id: string): Promise<void>
-    abstract listHomologatedByProducer(fk_producer: string): Promise<Roadmap[]>
+    abstract listHomologatedByProducer({ fk_producer, fk_status }: ListRoadmapDto): Promise<Roadmap[]>
 }

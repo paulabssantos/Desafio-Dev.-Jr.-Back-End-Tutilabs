@@ -33,8 +33,8 @@ export class RoadmapController {
   }
 
   @Get("/homologated")
-  listHomologatedRoadmapsByProducer() {
-    return this.listHomologatedRoadmapsByProducerService.execute("a8554be9-0b22-4030-ab80-6e927b0ae20d")
+  listHomologatedRoadmapsByProducer(@Body() { fk_status }: ListRoadmapDto) {
+    return this.listHomologatedRoadmapsByProducerService.execute({ fk_producer: "a8554be9-0b22-4030-ab80-6e927b0ae20d", fk_status })
   }
 
   @Get('/filter')
