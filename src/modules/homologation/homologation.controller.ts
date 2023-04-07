@@ -2,12 +2,15 @@ import { Body, Controller, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { HomologateRoadmapDto } from './dto/homologate-roadmap.dto';
 import { HomologateRoadmapService } from './services/homologateRoadmap.service';
+import { roles } from '../authentication/enum/roles.enum';
+import { Roles } from '../authentication/decorators/roles.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('homologation')
 export class HomologationController {
   constructor(private homologateRoadmapService: HomologateRoadmapService) { }
 
+  @Roles(roles.Producer)
   @Put()
   homologate(@Body() homologateRoadmapDto: HomologateRoadmapDto) {
     return this.homologateRoadmapService.execute(homologateRoadmapDto);
