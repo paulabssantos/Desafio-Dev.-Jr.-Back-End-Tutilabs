@@ -1,16 +1,19 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import multer from 'multer';
 import { multerConfig } from 'src/app/config/multer-config';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { CreateRoadmapDto } from './dto/create-roadmap.dto';
+import { ListRoadmapDto } from './dto/list-roadmap.dto';
 import { UpdateRoadmapDto } from './dto/update-roadmap.dto';
 import { CreateRoadmapService } from './services/createRoadmap.service';
-import { UpdateRoadmapService } from './services/updateRoadmap.service';
-import multer from 'multer';
-import { ListRoadmapService } from './services/listRoadmap.service';
-import { FindRoadmapService } from './services/findRoadMap.service';
 import { DeleteRoadmapService } from './services/deleteRoadmap.service';
-import { ListRoadmapDto } from './dto/list-roadmap.dto';
+import { FindRoadmapService } from './services/findRoadMap.service';
 import { ListHomologatedRoadmapsByProducerService } from './services/listHomologatedRoadmapsByProducer.service';
+import { ListRoadmapService } from './services/listRoadmap.service';
+import { UpdateRoadmapService } from './services/updateRoadmap.service';
+
+@UseGuards(JwtAuthGuard)
 @Controller('roadmap')
 export class RoadmapController {
   constructor(private readonly listHomologatedRoadmapsByProducerService: ListHomologatedRoadmapsByProducerService, private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService, private findRoadmapService: FindRoadmapService, private deleteRoadmapService: DeleteRoadmapService) { }

@@ -4,8 +4,10 @@ import {
   Get,
   Param,
   Post,
-  Put
+  Put,
+  UseGuards
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserService } from './services/createUser.service';
@@ -13,6 +15,7 @@ import { FindUserService } from './services/findUser.service';
 import { ListUsersService } from './services/listUser.service';
 import { UpdateUserService } from './services/updateUser.service';
 
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(

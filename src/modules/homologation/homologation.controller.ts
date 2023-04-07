@@ -1,7 +1,9 @@
-import { Body, Controller, Put } from '@nestjs/common';
+import { Body, Controller, Put, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { HomologateRoadmapDto } from './dto/homologate-roadmap.dto';
 import { HomologateRoadmapService } from './services/homologateRoadmap.service';
 
+@UseGuards(JwtAuthGuard)
 @Controller('homologation')
 export class HomologationController {
   constructor(private homologateRoadmapService: HomologateRoadmapService) { }
