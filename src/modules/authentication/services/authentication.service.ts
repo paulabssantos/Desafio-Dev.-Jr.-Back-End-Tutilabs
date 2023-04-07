@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/app/config/database/repositories/users/UserRepository';
 import { JwtService } from '@nestjs/jwt';
 import { Hash } from 'src/utils/hash/hash';
-import { User } from '../users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 
 
 @Injectable()
