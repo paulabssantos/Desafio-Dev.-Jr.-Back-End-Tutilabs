@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AuthenticationService } from './authentication.service';
+import { AuthenticationService } from './services/authentication.service';
 import { AuthenticationController } from './authentication.controller';
 import { DatabaseModule } from 'src/app/config/database/db.module';
 import { BcryptHashService } from 'src/utils/hash/implementations/BcryptHash.service';
