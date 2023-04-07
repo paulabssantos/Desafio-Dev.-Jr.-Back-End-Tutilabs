@@ -2,12 +2,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { HomologationRepository } from 'src/app/config/database/repositories/homologation/HomologationRepository';
 import { HomologateRoadmapDto } from '../dto/homologate-roadmap.dto';
 import { RoadmapRepository } from 'src/app/config/database/repositories/roadmap/RoadmapRepository';
+import { UserPayload } from 'src/modules/authentication/dto/user-payload.dto';
 
 @Injectable()
 export class HomologateRoadmapService {
     constructor(private homologationRepository: HomologationRepository, private roadmapRepository: RoadmapRepository) { }
 
-    async execute({ comment, fk_status, id }: HomologateRoadmapDto) {
+    async execute(user: UserPayload, { comment, fk_status, id }: HomologateRoadmapDto) {
         const homologation = await this.homologationRepository.findById(id)
 
         if (!homologation) {
@@ -16,7 +17,7 @@ export class HomologateRoadmapService {
 
         const roadmap = await this.roadmapRepository.findById(homologation.fk_roadmap)
 
-        if (roadmap.fk_producer != "qweqwe") {
+        if (roadmap.fk_producer != user.id) {
             throw new HttpException('Você não tem permissão para homologar roteiros vinculados a outras produtoras', HttpStatus.UNAUTHORIZED)
         }
 

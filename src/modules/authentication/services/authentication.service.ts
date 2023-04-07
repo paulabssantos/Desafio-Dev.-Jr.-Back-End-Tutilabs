@@ -3,6 +3,7 @@ import { UserRepository } from 'src/app/config/database/repositories/users/UserR
 import { JwtService } from '@nestjs/jwt';
 import { Hash } from 'src/utils/hash/hash';
 import { User } from '../../users/entities/user.entity';
+import { UserPayload } from '../dto/user-payload.dto';
 
 
 @Injectable()
@@ -22,7 +23,7 @@ export class AuthenticationService {
   }
 
   async login(user: User) {
-    const payload = { username: user.email, sub: user.id };
+    const payload: UserPayload = { id: user.id, fk_roles: user.fk_roles };
     return {
       access_token: this.jwtService.sign(payload),
     };
