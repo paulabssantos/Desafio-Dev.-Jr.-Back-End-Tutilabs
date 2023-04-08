@@ -75,7 +75,7 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
         })
         return data
     }
-    async filter({ description, fk_producer, fk_risk, max_proposed_budget, min_proposed_budget, title, fk_status }: ListRoadmapDto): Promise<Roadmap[]> {
+    async filter({ createdBy, description, fk_producer, fk_risk, max_proposed_budget, min_proposed_budget, title, fk_status }: ListRoadmapDto): Promise<Roadmap[]> {
         const data = await this.prisma.roadmap.findMany({
             where: {
                 description: {
@@ -92,7 +92,8 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
                 },
                 homologation: {
                     every: {
-                        fk_status
+                        fk_status,
+                        createdBy
                     }
                 }
             },

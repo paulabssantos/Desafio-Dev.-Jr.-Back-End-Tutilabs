@@ -29,4 +29,8 @@ export class ListRoadmapDto {
     @IsString({ message: "fk_status precisa ser uma string" })
     @ValidateIf((object, value) => value != null)
     fk_status?: string;
+
+    @IsString({ message: "createdBy precisa ser uma string" })
+    @ValidateIf((object, value) => value != null)
+    createdBy?: string;
 }
