@@ -10,7 +10,7 @@ import { UserPayload } from '../dto/user-payload.dto';
 export class AuthenticationService {
   constructor(private userRepository: UserRepository, private jwtService: JwtService, private hash: Hash) { }
 
-  async validateUser(email: string, password: string): Promise<any> {
+  async validateUser(email: string, password: string): Promise<Omit<User, "password">> {
     const user = await this.userRepository.findByEmail(email);
     if (user) {
       const isValid = await this.hash.compare(password, user.password)

@@ -4,4 +4,5 @@ export class User {
   fk_roles: string;
   password: string;
   email: string;
+  last_access: Date
 }

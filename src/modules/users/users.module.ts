@@ -7,10 +7,12 @@ import { UsersController } from './users.controller';
 import { FindUserService } from './services/findUser.service';
 import { DeleteUserService } from './services/deleteUser.service';
 import { HashModule } from 'src/utils/hash/hash.module';
+import { UpdatePasswordFirstAccessService } from './services/updatePasswordFirstAccess.service';
+import { AuthenticationModule } from '../authentication/authentication.module';
 
 @Module({
-  imports: [DatabaseModule, HashModule],
+  imports: [DatabaseModule, HashModule, AuthenticationModule],
   controllers: [UsersController],
-  providers: [CreateUserService, ListUsersService, UpdateUserService, FindUserService, DeleteUserService],
+  providers: [CreateUserService, ListUsersService, UpdateUserService, FindUserService, DeleteUserService, UpdatePasswordFirstAccessService,],
 })
 export class UsersModule { }

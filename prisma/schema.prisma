@@ -13,6 +13,7 @@ model users {
   password     String
   email        String         @unique
   fk_roles     String
+  last_access  DateTime?      @db.DateTime(0)
   homologation homologation[]
   roadmap      roadmap[]
   role         roles          @relation(fields: [fk_roles], references: [id])
@@ -67,4 +68,5 @@ model homologation {
   @@index([createdBy], map: "homologation_createdBy_fkey")
   @@index([fk_roadmap], map: "homologation_fk_roadmap_fkey")
   @@index([fk_status], map: "homologation_fk_status_fkey")
+  @@index([fk_roadmap], map: "homologation_fk_roadmap_key")
 }

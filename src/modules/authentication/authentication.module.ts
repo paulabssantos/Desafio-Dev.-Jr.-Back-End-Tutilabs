@@ -16,5 +16,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   })],
   controllers: [AuthenticationController],
   providers: [AuthenticationService, { provide: Hash, useClass: BcryptHashService }, LocalStrategy, JwtStrategy],
+  exports: [AuthenticationService]
 })
 export class AuthenticationModule { }
