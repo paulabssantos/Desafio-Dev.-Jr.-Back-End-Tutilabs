@@ -15,11 +15,13 @@ import { UpdateRoadmapService } from './services/updateRoadmap.service';
 import { RolesGuard } from '../authentication/guards/roles.guard';
 import { Roles } from '../authentication/decorators/roles.decorator';
 import { roles } from '../authentication/enum/roles.enum';
+import { SimulateInvestService } from './services/simulateInvest.service';
+import { SimulateInvestDto } from './dto/simulate-invest.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('roadmap')
 export class RoadmapController {
-  constructor(private readonly listHomologatedRoadmapsByProducerService: ListHomologatedRoadmapsByProducerService, private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService, private findRoadmapService: FindRoadmapService, private deleteRoadmapService: DeleteRoadmapService) { }
+  constructor(private readonly simulateInvestService: SimulateInvestService, private readonly listHomologatedRoadmapsByProducerService: ListHomologatedRoadmapsByProducerService, private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService, private findRoadmapService: FindRoadmapService, private deleteRoadmapService: DeleteRoadmapService) { }
 
   @Roles(roles.Screenwriter)
   @Post()
@@ -52,6 +54,11 @@ export class RoadmapController {
     return this.findRoadmapService.execute({ fk_status, description, fk_producer, fk_risk, max_proposed_budget, min_proposed_budget, title })
   }
 
+  @Roles(roles.Producer)
+  @Post("/simulate/:id")
+  simulateInvest(@Param('id') id: string, @Body() { investValue }: SimulateInvestDto) {
+    return this.simulateInvestService.execute({ id, investValue })
+  }
   @Roles(roles.Screenwriter)
   @Put(':id')
   @UseInterceptors(FileInterceptor('file', multerConfig))

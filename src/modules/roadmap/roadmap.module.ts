@@ -7,10 +7,11 @@ import { ListRoadmapService } from './services/listRoadmap.service';
 import { FindRoadmapService } from './services/findRoadMap.service';
 import { DeleteRoadmapService } from './services/deleteRoadmap.service';
 import { ListHomologatedRoadmapsByProducerService } from './services/listHomologatedRoadmapsByProducer.service';
+import { SimulateInvestService } from './services/simulateInvest.service';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [RoadmapController],
-  providers: [CreateRoadmapService, UpdateRoadmapService, ListRoadmapService, FindRoadmapService, DeleteRoadmapService, ListHomologatedRoadmapsByProducerService]
+  providers: [SimulateInvestService, CreateRoadmapService, UpdateRoadmapService, ListRoadmapService, FindRoadmapService, DeleteRoadmapService, ListHomologatedRoadmapsByProducerService]
 })
 export class RoadmapModule { }
