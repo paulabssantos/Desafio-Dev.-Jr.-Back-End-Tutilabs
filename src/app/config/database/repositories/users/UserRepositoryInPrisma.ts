@@ -30,7 +30,7 @@ export class UserRepositoryInPrisma implements UserRepository {
         const data = await this.prisma.users.findMany();
         return data
     }
-    async update(id: string, { email, fk_roles, name, password }: UpdateUserDto): Promise<void> {
+    async update(id: string, { email, fk_roles, name, password, last_access }: UpdateUserDto): Promise<void> {
         await this.prisma.users.update({
             where: {
                 id
@@ -39,7 +39,8 @@ export class UserRepositoryInPrisma implements UserRepository {
                 email,
                 fk_roles,
                 name,
-                password
+                password,
+                last_access
             }
         })
     }
