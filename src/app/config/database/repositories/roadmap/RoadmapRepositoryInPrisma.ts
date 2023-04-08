@@ -47,9 +47,27 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
                 }
             },
             include: {
+                producer: {
+                    select: {
+                        name: true,
+                        email: true,
+                    }
+                },
                 homologation: {
                     select: {
-                        comment: true, createdBy: true, fk_roadmap: true, fk_screenwriter: true, fk_status: true, id: true, roadmap: true, status: true
+                        fk_screenwriter: {
+                            select: {
+                                name: true,
+                                email: true
+                            }
+                        },
+                        status: {
+                            select: {
+                                id: true,
+                                description: true,
+                            }
+                        },
+                        comment: true,
                     }
                 },
                 risk: {
