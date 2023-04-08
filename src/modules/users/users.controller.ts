@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -17,6 +18,7 @@ import { UpdateUserService } from './services/updateUser.service';
 import { RolesGuard } from '../authentication/guards/roles.guard';
 import { Roles } from '../authentication/decorators/roles.decorator';
 import { roles } from '../authentication/enum/roles.enum';
+import { DeleteUserService } from './services/deleteUser.service';
 
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -28,6 +30,7 @@ export class UsersController {
     private readonly listUsersService: ListUsersService,
     private readonly updateUserService: UpdateUserService,
     private readonly findUserProducerService: FindUserService,
+    private readonly deleteUserService: DeleteUserService
   ) { }
 
   @Roles(roles.Admin)
@@ -54,8 +57,9 @@ export class UsersController {
     return this.updateUserService.execute(id, updateUserDto);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.usersService.remove(+id);
-  // }
+  @Roles(roles.Admin)
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.deleteUserService.execute(id)
+  }
 }

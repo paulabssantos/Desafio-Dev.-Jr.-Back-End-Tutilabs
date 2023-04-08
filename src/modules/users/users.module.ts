@@ -5,12 +5,12 @@ import { ListUsersService } from './services/listUser.service';
 import { UpdateUserService } from './services/updateUser.service';
 import { UsersController } from './users.controller';
 import { FindUserService } from './services/findUser.service';
-import { Hash } from 'src/utils/hash/hash';
-import { BcryptHashService } from 'src/utils/hash/implementations/BcryptHash.service';
+import { DeleteUserService } from './services/deleteUser.service';
+import { HashModule } from 'src/utils/hash/hash.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, HashModule],
   controllers: [UsersController],
-  providers: [CreateUserService, ListUsersService, UpdateUserService, FindUserService, { provide: Hash, useClass: BcryptHashService }],
+  providers: [CreateUserService, ListUsersService, UpdateUserService, FindUserService, DeleteUserService],
 })
 export class UsersModule { }

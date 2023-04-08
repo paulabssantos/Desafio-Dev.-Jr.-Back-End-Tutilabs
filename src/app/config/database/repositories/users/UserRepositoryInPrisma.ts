@@ -9,6 +9,13 @@ import { ListUserDto } from "src/modules/users/dto/list-user.dto";
 @Injectable()
 export class UserRepositoryInPrisma implements UserRepository {
     constructor(private prisma: PrismaService) { }
+    async delete(id: string): Promise<void> {
+        await this.prisma.users.delete({
+            where: {
+                id
+            }
+        })
+    }
     async create({ email, fk_roles, name, password }: CreateUserDto): Promise<void> {
         await this.prisma.users.create({
             data: {
