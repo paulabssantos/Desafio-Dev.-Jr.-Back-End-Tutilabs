@@ -4,7 +4,7 @@ import { ListRoadmapDto } from "src/modules/roadmap/dto/list-roadmap.dto";
 import { Roadmap } from "src/modules/roadmap/entities/roadmap.entity";
 
 export abstract class RoadmapRepository {
-    abstract create(createRoadmapDto: CreateRoadmapDto): Promise<void>
+    abstract create(createRoadmapDto: CreateRoadmapDto): Promise<Roadmap>
     abstract update(id: string, updateRoadmapDto: UpdateRoadmapDto): Promise<void>
     abstract list(): Promise<Roadmap[]>
     abstract filter(listRoadmapDto: ListRoadmapDto): Promise<Roadmap[]>

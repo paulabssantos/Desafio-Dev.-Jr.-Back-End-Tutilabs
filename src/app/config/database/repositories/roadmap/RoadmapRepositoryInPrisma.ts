@@ -30,8 +30,8 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
         })
         return data
     }
-    async create({ description, file, fk_producer, proposed_budget, fk_risk, title }: CreateRoadmapDto): Promise<void> {
-        await this.prisma.roadmap.create({
+    async create({ userLogged, description, file, fk_producer, proposed_budget, fk_risk, title }: CreateRoadmapDto): Promise<Roadmap> {
+        const data = await this.prisma.roadmap.create({
             data: {
                 description,
                 file,
@@ -42,11 +42,24 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
                 homologation: {
                     create: {
                         fk_status: '3',
-                        createdBy: 'a8554be9-0b22-4030-ab80-6e927b0ae20d'
+                        createdBy: userLogged.id
+                    }
+                }
+            },
+            include: {
+                homologation: {
+                    select: {
+                        comment: true, createdBy: true, fk_roadmap: true, fk_screenwriter: true, fk_status: true, id: true, roadmap: true, status: true
+                    }
+                },
+                risk: {
+                    select: {
+                        id: true, description: true
                     }
                 }
             }
         })
+        return data
     }
     async update(id: string, { description, file, fk_producer, fk_risk, proposed_budget, title }: UpdateRoadmapDto): Promise<void> {
         await this.prisma.roadmap.update({
@@ -68,11 +81,13 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
                                 id: true,
                                 description: true
                             }
-                        }
+                        },
+
                     }
                 }
             }
         })
+
         return data
     }
     async filter({ createdBy, description, fk_producer, fk_risk, max_proposed_budget, min_proposed_budget, title, fk_status }: ListRoadmapDto): Promise<Roadmap[]> {

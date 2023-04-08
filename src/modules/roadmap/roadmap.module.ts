@@ -8,9 +8,10 @@ import { FindRoadmapService } from './services/findRoadMap.service';
 import { DeleteRoadmapService } from './services/deleteRoadmap.service';
 import { ListHomologatedRoadmapsByProducerService } from './services/listHomologatedRoadmapsByProducer.service';
 import { SimulateInvestService } from './services/simulateInvest.service';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, MailModule],
   controllers: [RoadmapController],
   providers: [SimulateInvestService, CreateRoadmapService, UpdateRoadmapService, ListRoadmapService, FindRoadmapService, DeleteRoadmapService, ListHomologatedRoadmapsByProducerService]
 })

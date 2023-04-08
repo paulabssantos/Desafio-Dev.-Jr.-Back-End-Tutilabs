@@ -1,12 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { RoadmapRepository } from "src/app/config/database/repositories/roadmap/RoadmapRepository";
-import { CreateRoadmapDto } from "../dto/create-roadmap.dto";
-import { transporter } from "src/app/config/nodemailer-config";
 import { UserRepository } from "src/app/config/database/repositories/users/UserRepository";
+import { transporter } from "src/app/config/nodemailer-config";
+import { CreateRoadmapDto } from "../dto/create-roadmap.dto";
+import { roles } from "src/modules/authentication/enum/roles.enum";
+import { SendEmailCreationRoadmapService } from "src/modules/mail/services/sendEmailCreationRoadmap.service";
 
 @Injectable()
 export class CreateRoadmapService {
-    constructor(private roadmapRepository: RoadmapRepository, private userRepository: UserRepository) { }
+    constructor(private sendEmailCreationRoadmapService: SendEmailCreationRoadmapService, private roadmapRepository: RoadmapRepository, private userRepository: UserRepository) { }
 
     async execute(file: Express.Multer.File, createRoadmapDto: CreateRoadmapDto) {
         if (!file) {
@@ -14,14 +16,15 @@ export class CreateRoadmapService {
         }
         const user = await this.userRepository.find({ id: createRoadmapDto.fk_producer });
         if (user) {
-            if (user.fk_roles != '2') {
-                throw new HttpException('Usuário precisa ser uma produtora', HttpStatus.BAD_REQUEST)
+            if (user.fk_roles != roles.Producer) {
+                throw new HttpException('Você deve vincular o roteiro a uma produtora', HttpStatus.BAD_REQUEST)
             }
         }
         else {
             throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND)
         }
-        await this.roadmapRepository.create(createRoadmapDto)
-        transporter.sendMail({ envelope: { to: user.email }, subject: "Novo roteiro criado", html: "<p>Novo roteiro criado<p>", attachments: [file] })
+        const roadmap = await this.roadmapRepository.create(createRoadmapDto)
+        await this.sendEmailCreationRoadmapService.execute(user, file, roadmap)
+        return roadmap
     }
 }

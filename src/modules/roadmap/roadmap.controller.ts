@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Request, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import multer from 'multer';
 import { multerConfig } from 'src/app/config/multer-config';
@@ -17,6 +17,7 @@ import { Roles } from '../authentication/decorators/roles.decorator';
 import { roles } from '../authentication/enum/roles.enum';
 import { SimulateInvestService } from './services/simulateInvest.service';
 import { SimulateInvestDto } from './dto/simulate-invest.dto';
+import { UserPayload } from '../authentication/dto/user-payload.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('roadmap')
@@ -26,9 +27,10 @@ export class RoadmapController {
   @Roles(roles.Screenwriter)
   @Post()
   @UseInterceptors(FileInterceptor('file', multerConfig))
-  create(@UploadedFile() file: Express.Multer.File, @Body() { description, fk_risk, fk_producer, proposed_budget, title }: CreateRoadmapDto) {
+  create(@Request() req, @UploadedFile() file: Express.Multer.File, @Body() { description, fk_risk, fk_producer, proposed_budget, title }: CreateRoadmapDto) {
+    const userLogged: UserPayload = req.user
     try {
-      return this.createRoadmapService.execute(file, { description, file: file ? file.path : undefined, fk_producer, fk_risk, proposed_budget: Number(proposed_budget), title });
+      return this.createRoadmapService.execute(file, { description, file: file ? file.path : undefined, fk_producer, fk_risk, proposed_budget: Number(proposed_budget), title, userLogged });
     } catch (error) {
       if (error instanceof multer.MulterError) {
         throw new HttpException(`Erro no upload do arquivo - ${error.message}`, HttpStatus.UNPROCESSABLE_ENTITY)

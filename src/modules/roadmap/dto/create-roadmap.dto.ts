@@ -1,3 +1,5 @@
+import { UserPayload } from "src/modules/authentication/dto/user-payload.dto";
+
 export class CreateRoadmapDto {
     title: string;
     description: string;
@@ -5,4 +7,5 @@ export class CreateRoadmapDto {
     file: string;
     fk_risk: string;
     fk_producer: string;
+    userLogged: UserPayload;
 }
