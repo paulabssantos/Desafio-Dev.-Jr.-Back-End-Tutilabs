@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Request,
   UseGuards
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
@@ -21,6 +22,7 @@ import { roles } from '../authentication/enum/roles.enum';
 import { DeleteUserService } from './services/deleteUser.service';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { UpdatePasswordFirstAccessService } from './services/updatePasswordFirstAccess.service';
+import { UserPayload } from '../authentication/dto/user-payload.dto';
 
 @Controller('users')
 export class UsersController {
@@ -42,8 +44,9 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put('/password')
-  updatePassword(@Body() { actual_password, email, new_password }: UpdatePasswordDTO) {
-    return this.updatePasswordFirstAccessService.execute({ actual_password, email, new_password })
+  updatePassword(@Request() req, @Body() { actual_password, new_password }: UpdatePasswordDTO) {
+    const user: UserPayload = req.user
+    return this.updatePasswordFirstAccessService.execute(user, { actual_password, new_password })
   }
 
   @Roles(roles.Admin)
