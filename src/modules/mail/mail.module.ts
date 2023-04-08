@@ -2,6 +2,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { SendEmailCreationRoadmapService } from './services/sendEmailCreationRoadmap.service';
+import { SendEmailHomologateRoadmapService } from './services/sendEmailHomologateRoadmap.service';
 @Module({
   imports: [MailerModule.forRootAsync({
     useFactory: () => ({
@@ -15,7 +16,7 @@ import { SendEmailCreationRoadmapService } from './services/sendEmailCreationRoa
       },
     }),
   })],
-  providers: [SendEmailCreationRoadmapService],
-  exports: [SendEmailCreationRoadmapService]
+  providers: [SendEmailCreationRoadmapService, SendEmailHomologateRoadmapService],
+  exports: [SendEmailCreationRoadmapService, SendEmailHomologateRoadmapService]
 })
 export class MailModule { }

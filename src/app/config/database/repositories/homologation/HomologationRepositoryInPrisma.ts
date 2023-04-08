@@ -15,8 +15,8 @@ export class HomologationRepositoryInPrisma implements HomologationRepository {
         })
         return data
     }
-    async homologate({ comment, fk_status, id }: HomologateRoadmapDto): Promise<void> {
-        await this.prisma.homologation.update({
+    async homologate({ comment, fk_status, id }: HomologateRoadmapDto): Promise<Homologation> {
+        const data = await this.prisma.homologation.update({
             where: {
                 id
             },
@@ -25,6 +25,7 @@ export class HomologationRepositoryInPrisma implements HomologationRepository {
                 comment
             }
         })
+        return data
     }
 
 }

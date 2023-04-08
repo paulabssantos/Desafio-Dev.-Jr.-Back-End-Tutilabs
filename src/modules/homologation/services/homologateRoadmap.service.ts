@@ -3,10 +3,12 @@ import { HomologationRepository } from 'src/app/config/database/repositories/hom
 import { HomologateRoadmapDto } from '../dto/homologate-roadmap.dto';
 import { RoadmapRepository } from 'src/app/config/database/repositories/roadmap/RoadmapRepository';
 import { UserPayload } from 'src/modules/authentication/dto/user-payload.dto';
+import { SendEmailHomologateRoadmapService } from 'src/modules/mail/services/sendEmailHomologateRoadmap.service';
+import { UserRepository } from 'src/app/config/database/repositories/users/UserRepository';
 
 @Injectable()
 export class HomologateRoadmapService {
-    constructor(private homologationRepository: HomologationRepository, private roadmapRepository: RoadmapRepository) { }
+    constructor(private sendEmailHomologateRoadmap: SendEmailHomologateRoadmapService, private homologationRepository: HomologationRepository, private roadmapRepository: RoadmapRepository, private userRepository: UserRepository) { }
 
     async execute(user: UserPayload, { comment, fk_status, id }: HomologateRoadmapDto) {
         const homologation = await this.homologationRepository.findById(id)
@@ -28,6 +30,10 @@ export class HomologateRoadmapService {
             throw new HttpException('O status precisa ser aprovado ou reprovado', HttpStatus.BAD_REQUEST)
         }
 
-        return await this.homologationRepository.homologate({ comment, fk_status, id })
+        const screenwriter = await this.userRepository.find({ id: homologation.createdBy })
+        const producer = await this.userRepository.find({ id: user.id })
+
+        const updtedHomologation = await this.homologationRepository.homologate({ comment, fk_status, id })
+        this.sendEmailHomologateRoadmap.execute(screenwriter, producer, updtedHomologation, roadmap)
     }
 }
