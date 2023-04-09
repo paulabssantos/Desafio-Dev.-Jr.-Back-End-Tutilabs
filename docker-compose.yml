@@ -7,9 +7,9 @@ services:
     volumes:
       - ./db:/var/lib/mysql
     ports:
-      - "3002:3306"
+      - "${DB_PORT}:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: sgr
 
   nest-sgr-api:
@@ -25,6 +25,6 @@ services:
       - ./prisma:/usr/src/sgr-backend/prisma
       - ./uploads/:/usr/src/sgr-backend/uploads
     ports:
-      - "3000:3000"
+      - "${PORT}:${PORT}"
     links:
       - mysql-sgr
