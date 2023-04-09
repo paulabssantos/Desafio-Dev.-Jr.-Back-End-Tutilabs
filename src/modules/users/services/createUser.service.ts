@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserRepository } from 'src/app/config/database/repositories/users/UserRepository';
 import { Hash } from 'src/utils/hash/hash';
+import { roles } from 'src/modules/authentication/enum/roles.enum';
 
 @Injectable()
 export class CreateUserService {
@@ -15,6 +16,9 @@ export class CreateUserService {
           HttpStatus.BAD_REQUEST,
         );
       }
+    }
+    if (fk_roles != roles.Admin && fk_roles != roles.Producer && fk_roles != roles.Screenwriter) {
+      throw new HttpException('O nível de acesso informado é inválido. Os níveis são admin, produtora e roteirista', HttpStatus.BAD_REQUEST)
     }
 
     const hash_password = await this.hashService.hash(email.split("@")[0] + '12345')
