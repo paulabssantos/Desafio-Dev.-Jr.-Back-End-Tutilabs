@@ -18,6 +18,10 @@ export class HomologateRoadmapService {
             throw new HttpException('Homologação não encontrada', HttpStatus.NOT_FOUND)
         }
 
+        if (fk_status != status.approved && fk_status != status.disapproved && fk_status != status.in_progress) {
+            throw new HttpException('Status informado é inválido. O status só pode ser aprovado, reprovado e em análise.', HttpStatus.BAD_REQUEST)
+        }
+
         const roadmap = await this.roadmapRepository.findById(homologation.fk_roadmap)
 
         if (roadmap.fk_producer != user.id) {
