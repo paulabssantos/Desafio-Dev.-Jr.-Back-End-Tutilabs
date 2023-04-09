@@ -12,7 +12,7 @@ export async function CreateUsers() {
         try {
             await prisma.users.create({
                 data: {
-                    email: process.env.EMAIL,
+                    email: "teste@teste.com",
                     name: "admin",
                     password: await hash.hash('1234'),
                     fk_roles: roles.Admin,
