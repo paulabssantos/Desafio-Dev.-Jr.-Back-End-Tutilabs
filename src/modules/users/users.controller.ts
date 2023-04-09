@@ -24,7 +24,10 @@ import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { UpdatePasswordFirstAccessService } from './services/updatePasswordFirstAccess.service';
 import { UserPayload } from '../authentication/dto/user-payload.dto';
 import { ListUserDto } from './dto/list-user.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(
@@ -36,6 +39,7 @@ export class UsersController {
     private readonly updatePasswordFirstAccessService: UpdatePasswordFirstAccessService
   ) { }
 
+  @ApiOperation({ summary: 'Filtra usuários', description: "Filtra usuários por nome, email,id e nivel de acesso" })
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('/filter')
@@ -43,6 +47,7 @@ export class UsersController {
     return this.findUserService.execute({ id, email, fk_roles, name });
   }
 
+  @ApiOperation({ summary: 'Alterar senha' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put('/password')
   updatePassword(@Request() req, @Body() { actual_password, new_password }: UpdatePasswordDTO) {
@@ -50,6 +55,7 @@ export class UsersController {
     return this.updatePasswordFirstAccessService.execute(user, { actual_password, new_password })
   }
 
+  @ApiOperation({ summary: 'Atualiza um usuário' })
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
@@ -57,12 +63,15 @@ export class UsersController {
     return this.updateUserService.execute(id, updateUserDto);
   }
 
+  @ApiOperation({ summary: 'Deleta um usuário' })
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.deleteUserService.execute(id)
   }
+
+  @ApiOperation({ summary: 'Lista todos os usuários' })
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
@@ -70,6 +79,7 @@ export class UsersController {
     return this.listUsersService.execute();
   }
 
+  @ApiOperation({ summary: 'Cria um usuário' })
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
