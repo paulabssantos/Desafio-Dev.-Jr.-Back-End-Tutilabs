@@ -1,22 +1,5 @@
 version: '3.9'
 services:
-  nest-sgr-api:
-    container_name: nest-sgr-api
-    command: bash -c "npm install && npx prisma generate && npx prisma db push"
-    env_file:
-      - .env
-    restart: always
-    working_dir: /usr/src/sgr-backend
-    volumes:
-      - ./dist/:/usr/src/sgr-backend/dist
-      - ./package.json:/usr/src/sgr-backend/package.json
-      - ./prisma:/usr/src/sgr-backend/prisma
-    image: node:16
-    ports:
-      - "3000:3000"
-    links:
-      - mysql-sgr
-
   mysql-sgr:
     container_name: mysql-sgr
     image: mysql:latest
@@ -28,3 +11,20 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 12345
       MYSQL_DATABASE: sgr
+
+  nest-sgr-api:
+    container_name: nest-sgr-api
+    image: node:16
+    command: bash -c "npm install && npx prisma generate && npx prisma db push && npm run start:prod"
+    env_file:
+      - .env
+    working_dir: /usr/src/sgr-backend
+    volumes:
+      - ./dist/:/usr/src/sgr-backend/dist
+      - ./package.json:/usr/src/sgr-backend/package.json
+      - ./prisma:/usr/src/sgr-backend/prisma
+      - ./uploads/:/usr/src/sgr-backend/uploads
+    ports:
+      - "3000:3000"
+    links:
+      - mysql-sgr
