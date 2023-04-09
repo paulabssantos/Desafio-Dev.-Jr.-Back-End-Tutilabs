@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id           String         @id @default(uuid())
+  name         String
+  password     String
+  email        String         @unique
+  fk_roles     String
+  last_access  DateTime?      @db.DateTime(0)
+  homologation homologation[]
+  roadmap      roadmap[]
+  role         roles          @relation(fields: [fk_roles], references: [id])
+
+  @@index([fk_roles], map: "users_fk_roles_fkey")
+}
+
+model roles {
+  id          String  @id @default(uuid())
+  description String
+  users       users[]
+}
+
+model risk {
+  id          String    @id @default(uuid())
+  description String
+  roadmap     roadmap[]
+}
+
+model roadmap {
+  id              String         @id @default(uuid())
+  title           String
+  description     String
+  proposed_budget Float
+  file            String
+  fk_producer     String
+  fk_risk         String
+  homologation    homologation[]
+  producer        users          @relation(fields: [fk_producer], references: [id])
+  risk            risk           @relation(fields: [fk_risk], references: [id])
+
+  @@index([fk_producer], map: "roadmap_fk_produtora_fkey")
+  @@index([fk_risk], map: "roadmap_fk_risk_fkey")
+}
+
+model status {
+  id           String         @id @default(uuid())
+  description  String
+  homologation homologation[]
+}
+
+model homologation {
+  id              String  @id @default(uuid())
+  fk_roadmap      String
+  fk_status       String
+  comment         String?
+  createdBy       String
+  fk_screenwriter users   @relation(fields: [createdBy], references: [id])
+  roadmap         roadmap @relation(fields: [fk_roadmap], references: [id], onDelete: Cascade)
+  status          status  @relation(fields: [fk_status], references: [id])
+
+  @@index([createdBy], map: "homologation_createdBy_fkey")
+  @@index([fk_roadmap], map: "homologation_fk_roadmap_fkey")
+  @@index([fk_status], map: "homologation_fk_status_fkey")
+  @@index([fk_roadmap], map: "homologation_fk_roadmap_key")
+}

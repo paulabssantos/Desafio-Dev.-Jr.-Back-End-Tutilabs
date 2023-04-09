@@ -1,0 +1,64 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.4;
+        color: #333;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th,
+    td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2d5;
+        color: #444;
+        font-weight: bold;
+    }
+
+    button {
+        background-color: rgba(0, 174, 255, 0.959);
+        width: 50%;
+        height: 50px;
+        margin-bottom: 20px;
+        border: none;
+    }
+</style>
+<div class="body-email">
+    <center>
+        <div class="mail">
+            <div class="header-mail">
+                <div class="text">
+                    <h1>Novo roteiro criado!</h1>
+                </div>
+            </div>
+            <div class="body-mail">
+                <p><b>{{name}}</b>, um novo roteiro foi criado. Segue em anexo o arquivo.</p>
+                <a href="http://localhost:3000/roadmap/"><button>Clique aqui para mais detalhes</button></a>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Descrição</th>
+                            <th>Orçamento proposto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{title}}</td>
+                            <td>{{description}}</td>
+                            <td>R${{proposed_budget}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </center>
+</div>
