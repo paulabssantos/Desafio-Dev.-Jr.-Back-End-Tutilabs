@@ -18,14 +18,23 @@ import { roles } from '../authentication/enum/roles.enum';
 import { SimulateInvestService } from './services/simulateInvest.service';
 import { SimulateInvestDto } from './dto/simulate-invest.dto';
 import { UserPayload } from '../authentication/dto/user-payload.dto';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { createRoadmaBody, createRoadmapOperation } from './docs/swagger/createRoadmap';
+import { updateRoadmapOperation } from './docs/swagger/updateRoadmap';
 
+@ApiTags("Roadmap")
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('roadmap')
 export class RoadmapController {
   constructor(private readonly simulateInvestService: SimulateInvestService, private readonly listHomologatedRoadmapsByProducerService: ListHomologatedRoadmapsByProducerService, private readonly createRoadmapService: CreateRoadmapService, private readonly updateRoadmapService: UpdateRoadmapService, private listRoadMapService: ListRoadmapService, private findRoadmapService: FindRoadmapService, private deleteRoadmapService: DeleteRoadmapService) { }
 
+
   @Roles(roles.Screenwriter)
   @Post()
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation(createRoadmapOperation)
+  @ApiBody({ schema: createRoadmaBody })
   @UseInterceptors(FileInterceptor('file', multerConfig))
   create(@Request() req, @UploadedFile() file: Express.Multer.File, @Body() { description, fk_risk, fk_producer, proposed_budget, title }: CreateRoadmapDto) {
     const userLogged: UserPayload = req.user
@@ -38,6 +47,8 @@ export class RoadmapController {
     }
   }
 
+  @ApiOperation({ summary: "Lista roteiros homologados da produtora logada", description: "Lista roteiros homologados por produtora. Pode ser filtrada por status de aprovado, reprovado e em análise" })
+  @ApiBody({ schema: { properties: { fk_status: { type: 'string', description: 'Status de homologação do roteiro', enum: ['1', '2', '3'] } } } })
   @Roles(roles.Producer)
   @Get("/homologated")
   listHomologatedRoadmapsByProducer(@Request() req, @Body() { fk_status }: ListRoadmapDto) {
@@ -45,23 +56,30 @@ export class RoadmapController {
     return this.listHomologatedRoadmapsByProducerService.execute({ fk_producer: user.id, fk_status })
   }
 
+  @ApiOperation({ summary: "Lista todos os roteiros e seus respectivos status" })
   @Roles(roles.Screenwriter)
   @Get()
   findAll() {
     return this.listRoadMapService.execute();
   }
 
+  @ApiOperation({ summary: "Filtra roteiros" })
   @Roles(roles.Screenwriter)
   @Get('/filter')
   filter(@Body() { fk_status, description, fk_producer, fk_risk, max_proposed_budget, min_proposed_budget, title }: ListRoadmapDto) {
     return this.findRoadmapService.execute({ fk_status, description, fk_producer, fk_risk, max_proposed_budget, min_proposed_budget, title })
   }
 
+  @ApiOperation({ summary: "Simula investimento" })
   @Roles(roles.Producer)
   @Post("/simulate/:id")
   simulateInvest(@Param('id') id: string, @Body() { investValue }: SimulateInvestDto) {
     return this.simulateInvestService.execute({ id, investValue })
   }
+
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation(updateRoadmapOperation)
+  @ApiBody({ schema: createRoadmaBody })
   @Roles(roles.Screenwriter)
   @Put(':id')
   @UseInterceptors(FileInterceptor('file', multerConfig))
@@ -75,6 +93,7 @@ export class RoadmapController {
     }
   }
 
+  @ApiOperation({ summary: "Deleta um roteiro" })
   @Roles(roles.Screenwriter)
   @Delete(':id')
   delete(@Param('id') id: string) {
