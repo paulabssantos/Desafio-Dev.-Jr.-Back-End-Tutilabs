@@ -4,6 +4,7 @@ import { UserRepository } from "src/app/config/database/repositories/users/UserR
 import { CreateRoadmapDto } from "../dto/create-roadmap.dto";
 import { roles } from "src/modules/authentication/enum/roles.enum";
 import { SendEmailCreationRoadmapService } from "src/modules/mail/services/sendEmailCreationRoadmap.service";
+import { risk } from "../enum/risk.enum";
 
 @Injectable()
 export class CreateRoadmapService {
@@ -14,7 +15,7 @@ export class CreateRoadmapService {
             throw new HttpException('Arquivo de roteiro é obrigatório', HttpStatus.BAD_REQUEST)
         }
 
-        if (createRoadmapDto.fk_risk != '1' && createRoadmapDto.fk_risk != '2' && createRoadmapDto.fk_risk != '3') {
+        if (createRoadmapDto.fk_risk != risk.high && createRoadmapDto.fk_risk != risk.low && createRoadmapDto.fk_risk != risk.medium) {
             throw new HttpException('O risco inputado não é válido. Os valores são: alto, baixo e médio', HttpStatus.BAD_REQUEST)
         }
         const user = await this.userRepository.find({ id: createRoadmapDto.fk_producer });
