@@ -7,7 +7,7 @@ import { ListUserDto } from '../dto/list-user.dto';
 export class FindUserService {
     constructor(private readonly userRepository: UserRepository) { }
 
-    async execute({ id }: ListUserDto) {
-        return await this.userRepository.find({ id })
+    async execute({ id, email, fk_roles, name }: ListUserDto) {
+        return await this.userRepository.filter({ id, email, fk_roles, name })
     }
 }

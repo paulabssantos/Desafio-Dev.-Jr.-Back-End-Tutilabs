@@ -53,10 +53,25 @@ export class UserRepositoryInPrisma implements UserRepository {
         return data
     }
 
-    async find({ id, fk_roles }: ListUserDto): Promise<User> {
-        const data = await this.prisma.users.findFirst({
+    async find({ id }: ListUserDto): Promise<User> {
+        const data = await this.prisma.users.findUnique({
+            where: {
+                id
+            }
+        })
+        return data
+    }
+
+    async filter({ id, email, fk_roles, name }: ListUserDto): Promise<User[]> {
+        const data = await this.prisma.users.findMany({
             where: {
                 id,
+                email: {
+                    startsWith: email
+                },
+                name: {
+                    startsWith: name
+                },
                 fk_roles
             }
         })

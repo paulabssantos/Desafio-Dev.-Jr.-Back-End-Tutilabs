@@ -23,6 +23,7 @@ import { DeleteUserService } from './services/deleteUser.service';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { UpdatePasswordFirstAccessService } from './services/updatePasswordFirstAccess.service';
 import { UserPayload } from '../authentication/dto/user-payload.dto';
+import { ListUserDto } from './dto/list-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -30,16 +31,16 @@ export class UsersController {
     private readonly createUserService: CreateUserService,
     private readonly listUsersService: ListUsersService,
     private readonly updateUserService: UpdateUserService,
-    private readonly findUserProducerService: FindUserService,
+    private readonly findUserService: FindUserService,
     private readonly deleteUserService: DeleteUserService,
     private readonly updatePasswordFirstAccessService: UpdatePasswordFirstAccessService
   ) { }
 
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.findUserProducerService.execute({ id });
+  @Get('/filter')
+  findOne(@Body() { email, fk_roles, id, name }: ListUserDto) {
+    return this.findUserService.execute({ id, email, fk_roles, name });
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

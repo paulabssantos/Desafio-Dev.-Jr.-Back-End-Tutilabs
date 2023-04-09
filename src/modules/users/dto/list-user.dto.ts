@@ -9,6 +9,9 @@ export class ListUserDto {
     @ValidateIf((object, value) => value != null)
     email?: string;
 
+    @IsString({ message: "Id do usuário precisa ser uma string" })
+    @ValidateIf((object, value) => value != null)
+    name?: string;
 
     @IsString({ message: "Id do nível de acesso precisa ser uma string" })
     @ValidateIf((object, value) => value != null)
