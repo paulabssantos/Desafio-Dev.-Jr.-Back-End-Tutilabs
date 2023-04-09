@@ -6,12 +6,16 @@ import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { RolesGuard } from '../authentication/guards/roles.guard';
 import { HomologateRoadmapDto } from './dto/homologate-roadmap.dto';
 import { HomologateRoadmapService } from './services/homologateRoadmap.service';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('homologation')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('homologation')
 export class HomologationController {
   constructor(private homologateRoadmapService: HomologateRoadmapService) { }
 
+  @ApiOperation({ summary: "Homologa um roteiro" })
   @Roles(roles.Producer)
   @Put()
   homologate(@Request() req, @Body() homologateRoadmapDto: HomologateRoadmapDto) {
