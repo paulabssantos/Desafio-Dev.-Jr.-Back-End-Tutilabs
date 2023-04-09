@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsNumberString, IsString } from "class-validator";
 import { UserPayload } from "src/modules/authentication/dto/user-payload.dto";
 
 export class CreateRoadmapDto {
@@ -10,7 +10,7 @@ export class CreateRoadmapDto {
     @IsNotEmpty({ message: "Descrição é obrigatório" })
     description: string;
 
-    @IsNumber({}, { message: "Orçamento proposto precisa ser um número" })
+    @IsNumberString({}, { message: "Orçamento proposto precisa ser um número" })
     @IsNotEmpty({ message: "Orçamento proposto é obrigatório" })
     proposed_budget: number;
 
