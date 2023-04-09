@@ -4,7 +4,7 @@
 - localhost:PORTA/swagger
 
 ## Popular banco
-### Ao rodar o comando abaixo, as tabelas de risco, status e níveis de acesso serão populadas. Bem como a tabela de usuários, que criará um usuário admin padrão com o e-mail definido no arquivo .env 
+### Ao rodar o comando abaixo, as tabelas de risco, status e níveis de acesso serão populadas. Bem como a tabela de usuários, que criará um usuário admin com a senha de login '1234' e email 'teste@teste.com'
 
 - npm run seed
 
