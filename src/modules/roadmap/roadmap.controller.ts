@@ -38,16 +38,17 @@ export class RoadmapController {
     }
   }
 
+  @Roles(roles.Producer)
+  @Get("/homologated")
+  listHomologatedRoadmapsByProducer(@Request() req, @Body() { fk_status }: ListRoadmapDto) {
+    const user: UserPayload = req.user
+    return this.listHomologatedRoadmapsByProducerService.execute({ fk_producer: user.id, fk_status })
+  }
+
   @Roles(roles.Screenwriter)
   @Get()
   findAll() {
     return this.listRoadMapService.execute();
-  }
-
-  @Roles(roles.Producer)
-  @Get("/homologated")
-  listHomologatedRoadmapsByProducer(@Body() { fk_status }: ListRoadmapDto) {
-    return this.listHomologatedRoadmapsByProducerService.execute({ fk_producer: "a8554be9-0b22-4030-ab80-6e927b0ae20d", fk_status })
   }
 
   @Roles(roles.Screenwriter)
