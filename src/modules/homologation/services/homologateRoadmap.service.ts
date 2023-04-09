@@ -5,6 +5,7 @@ import { RoadmapRepository } from 'src/app/config/database/repositories/roadmap/
 import { UserPayload } from 'src/modules/authentication/dto/user-payload.dto';
 import { SendEmailHomologateRoadmapService } from 'src/modules/mail/services/sendEmailHomologateRoadmap.service';
 import { UserRepository } from 'src/app/config/database/repositories/users/UserRepository';
+import { status } from '../enum/status.enum';
 
 @Injectable()
 export class HomologateRoadmapService {
@@ -23,10 +24,10 @@ export class HomologateRoadmapService {
             throw new HttpException('Você não tem permissão para homologar roteiros vinculados a outras produtoras', HttpStatus.UNAUTHORIZED)
         }
 
-        if (homologation.fk_status != '3') {
+        if (homologation.fk_status != status.in_progress) {
             throw new HttpException('Roteiro já homologado', HttpStatus.BAD_REQUEST)
         }
-        if (fk_status == '3') {
+        if (fk_status == status.in_progress) {
             throw new HttpException('O status precisa ser aprovado ou reprovado', HttpStatus.BAD_REQUEST)
         }
 

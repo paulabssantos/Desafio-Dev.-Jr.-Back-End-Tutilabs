@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { HomologationRepository } from "src/app/config/database/repositories/homologation/HomologationRepository";
 import { RoadmapRepository } from "src/app/config/database/repositories/roadmap/RoadmapRepository";
 import { UserRepository } from "src/app/config/database/repositories/users/UserRepository";
 import { roles } from "src/modules/authentication/enum/roles.enum";
+import { status } from "src/modules/homologation/enum/status.enum";
 
 @Injectable()
 export class DeleteUserService {
@@ -15,7 +15,7 @@ export class DeleteUserService {
         }
 
         if (user.fk_roles == roles.Producer) {
-            const roadmapsApprovedByProducer = await this.roadmapRepository.filter({ fk_producer: user.id, fk_status: '1' })
+            const roadmapsApprovedByProducer = await this.roadmapRepository.filter({ fk_producer: user.id, fk_status: status.approved })
             if (roadmapsApprovedByProducer) {
                 throw new HttpException('A produtora possui roteiros aprovados', HttpStatus.BAD_REQUEST)
             }

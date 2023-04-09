@@ -5,6 +5,7 @@ import { UpdateRoadmapDto } from "src/modules/roadmap/dto/update-roadmap.dto";
 import { Roadmap } from "src/modules/roadmap/entities/roadmap.entity";
 import { PrismaService } from "../../prisma/prisma.service";
 import { ListRoadmapDto } from "src/modules/roadmap/dto/list-roadmap.dto";
+import { status } from "src/modules/homologation/enum/status.enum";
 
 @Injectable()
 export class RoadmapRepositoryInPrisma implements RoadmapRepository {
@@ -15,7 +16,7 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
                 fk_producer,
                 homologation: {
                     every: {
-                        fk_status: !fk_status ? { notIn: ['3'] } : fk_status,
+                        fk_status: !fk_status ? { notIn: [status.in_progress] } : fk_status,
                     }
                 }
             }
@@ -41,7 +42,7 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
                 fk_risk,
                 homologation: {
                     create: {
-                        fk_status: '3',
+                        fk_status: status.in_progress,
                         createdBy: userLogged.id
                     }
                 }
