@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { roles } from '../enum/roles.enum';
+import { HttpException, HttpStatus } from "@nestjs/common"
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -19,6 +20,10 @@ export class RolesGuard implements CanActivate {
         }
         const request = context.switchToHttp().getRequest();
         const user = request.user;
-        return requiredRoles.some((role) => role === user.fk_roles);
+        if (requiredRoles.some((role) => role === user.fk_roles)) {
+            return true
+        } else {
+            throw new HttpException('Você não tem permissão para acessar esta parte do sistema', HttpStatus.UNAUTHORIZED)
+        }
     }
 }
