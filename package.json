@@ -7,6 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "up": "npm run build && docker compose up -d",
+    "down": "docker compose down",
     "seed": "ts-node-dev src/app/seeds/",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
