@@ -9,11 +9,13 @@ export class CreateUserDto {
 
 
     @IsString({ message: "Id do nível de acesso precisa ser uma string" })
-    @IsNotEmpty({ message: "Id dpo nível de acesso é obrigatório" })
+    @IsNotEmpty({ message: "Id do nível de acesso é obrigatório" })
     @ApiProperty()
     fk_roles: string;
 
     @ApiProperty()
+    @IsString({ message: "Senha precisa ser uma string" })
+    @IsNotEmpty({ message: "Senha é obrigatória" })
     password?: string;
 
     @IsEmail({}, { message: "Email precisa ser válido" })
