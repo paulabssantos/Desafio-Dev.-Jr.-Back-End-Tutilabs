@@ -16,15 +16,23 @@ export class UserRepositoryInPrisma implements UserRepository {
             }
         })
     }
-    async create({ email, fk_roles, name, password }: CreateUserDto): Promise<void> {
-        await this.prisma.users.create({
+    async create({ email, fk_roles, name, password }: CreateUserDto): Promise<Omit<User, "password">> {
+        const data = await this.prisma.users.create({
             data: {
                 email,
                 fk_roles,
                 name,
                 password
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                fk_roles: true,
+                last_access: true
             }
         })
+        return data
     }
     async list(): Promise<User[]> {
         const data = await this.prisma.users.findMany();
@@ -62,7 +70,7 @@ export class UserRepositoryInPrisma implements UserRepository {
         return data
     }
 
-    async filter({ id, email, fk_roles, name }: ListUserDto): Promise<User[]> {
+    async filter({ id, email, fk_roles, name }: ListUserDto): Promise<Omit<User, "password">[]> {
         const data = await this.prisma.users.findMany({
             where: {
                 id,
@@ -73,6 +81,13 @@ export class UserRepositoryInPrisma implements UserRepository {
                     startsWith: name
                 },
                 fk_roles
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                fk_roles: true,
+                last_access: true
             }
         })
         return data
