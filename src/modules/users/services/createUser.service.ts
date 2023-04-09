@@ -16,7 +16,8 @@ export class CreateUserService {
         );
       }
     }
-    const hash_password = await this.hashService.hash('12345')
+
+    const hash_password = await this.hashService.hash(email.split("@")[0] + '12345')
 
     return await this.userRepository.create({
       email,
