@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { RoadmapRepository } from "src/app/config/database/repositories/roadmap/RoadmapRepository";
 import { UserRepository } from "src/app/config/database/repositories/users/UserRepository";
+import { UserPayload } from "src/modules/authentication/dto/user-payload.dto";
 import { roles } from "src/modules/authentication/enum/roles.enum";
 import { status } from "src/modules/homologation/enum/status.enum";
 
@@ -24,6 +25,8 @@ export class DeleteUserService {
             if (roadmapsCreatedByScreenWriter) {
                 throw new HttpException('O roteirista possui roteiros criados', HttpStatus.BAD_REQUEST)
             }
+        } else if (user.fk_roles == roles.Admin) {
+            throw new HttpException('Não é possível deletar um usuário admin', HttpStatus.BAD_REQUEST)
         }
 
         await this.userRepository.delete(user.id)
