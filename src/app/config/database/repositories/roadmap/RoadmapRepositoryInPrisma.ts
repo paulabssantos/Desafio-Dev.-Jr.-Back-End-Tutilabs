@@ -80,15 +80,21 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
         })
         return data
     }
-    async update(id: string, { description, file, fk_producer, fk_risk, proposed_budget, title }: UpdateRoadmapDto): Promise<void> {
-        await this.prisma.roadmap.update({
+    async update(id: string, { description, file, fk_producer, fk_risk, proposed_budget, title }: UpdateRoadmapDto): Promise<Roadmap> {
+        const data = await this.prisma.roadmap.update({
             data: {
-                description, file, fk_producer, fk_risk, proposed_budget, title
+                description,
+                file,
+                proposed_budget,
+                title,
+                fk_producer,
+                fk_risk,
             },
             where: {
                 id
             }
         })
+        return data
     }
     async list(): Promise<Roadmap[]> {
         const data = await this.prisma.roadmap.findMany({
