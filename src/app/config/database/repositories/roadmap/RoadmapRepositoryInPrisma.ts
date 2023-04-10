@@ -119,21 +119,21 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
         const data = await this.prisma.roadmap.findMany({
             where: {
                 description: {
-                    contains: description
+                    contains: description ? description : undefined
                 },
-                fk_producer,
-                fk_risk,
+                fk_producer: fk_producer ? fk_producer : undefined,
+                fk_risk: fk_risk ? fk_risk : undefined,
                 proposed_budget: {
-                    gte: min_proposed_budget,
-                    lte: max_proposed_budget
+                    gte: min_proposed_budget ? min_proposed_budget : undefined,
+                    lte: max_proposed_budget ? min_proposed_budget : undefined
                 },
                 title: {
-                    startsWith: title
+                    startsWith: title ? title : undefined
                 },
                 homologation: {
                     every: {
-                        fk_status,
-                        createdBy
+                        fk_status: fk_status ? fk_status : undefined,
+                        createdBy: createdBy ? createdBy : undefined
                     }
                 }
             },
