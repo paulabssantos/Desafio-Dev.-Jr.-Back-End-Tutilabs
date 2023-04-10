@@ -13,9 +13,6 @@ export class CreateUserDto {
     @ApiProperty()
     fk_roles: string;
 
-    @ApiProperty()
-    @IsString({ message: "Senha precisa ser uma string" })
-    @IsNotEmpty({ message: "Senha é obrigatória" })
     password?: string;
 
     @IsEmail({}, { message: "Email precisa ser válido" })
