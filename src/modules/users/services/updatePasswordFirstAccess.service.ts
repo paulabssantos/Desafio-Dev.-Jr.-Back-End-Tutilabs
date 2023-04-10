@@ -9,12 +9,15 @@ import { UserPayload } from "src/modules/authentication/dto/user-payload.dto";
 export class UpdatePasswordFirstAccessService {
     constructor(private hashService: Hash, private authService: AuthenticationService, private userRepository: UserRepository) { }
 
-    async execute(userLogged: UserPayload, { actual_password, new_password }: UpdatePasswordDTO) {
-        const user = await this.userRepository.find({ id: userLogged.id })
-        const validateUser = await this.authService.validateUser(user.email, actual_password)
-        if (validateUser.last_access != null) {
+    async execute({ email, password, new_password }: UpdatePasswordDTO) {
+        const user = await this.userRepository.findByEmail(email)
+        if (!user) {
+            throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND)
+        }
+        if (user.last_access != null) {
             throw new HttpException('Você só pode alterar a senha no seu primeiro acesso', HttpStatus.BAD_REQUEST)
         }
-        await this.userRepository.update(validateUser.id, { password: await this.hashService.hash(new_password) })
+        await this.userRepository.update(user.id, { password: await this.hashService.hash(new_password) })
+        return await this.authService.login(user)
     }
 }

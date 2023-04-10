@@ -80,15 +80,21 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
         })
         return data
     }
-    async update(id: string, { description, file, fk_producer, fk_risk, proposed_budget, title }: UpdateRoadmapDto): Promise<void> {
-        await this.prisma.roadmap.update({
+    async update(id: string, { description, file, fk_producer, fk_risk, proposed_budget, title }: UpdateRoadmapDto): Promise<Roadmap> {
+        const data = await this.prisma.roadmap.update({
             data: {
-                description, file, fk_producer, fk_risk, proposed_budget, title
+                description,
+                file,
+                proposed_budget,
+                title,
+                fk_producer,
+                fk_risk,
             },
             where: {
                 id
             }
         })
+        return data
     }
     async list(): Promise<Roadmap[]> {
         const data = await this.prisma.roadmap.findMany({
@@ -113,21 +119,21 @@ export class RoadmapRepositoryInPrisma implements RoadmapRepository {
         const data = await this.prisma.roadmap.findMany({
             where: {
                 description: {
-                    contains: description
+                    contains: description ? description : undefined
                 },
-                fk_producer,
-                fk_risk,
+                fk_producer: fk_producer ? fk_producer : undefined,
+                fk_risk: fk_risk ? fk_risk : undefined,
                 proposed_budget: {
-                    gte: min_proposed_budget,
-                    lte: max_proposed_budget
+                    gte: min_proposed_budget ? min_proposed_budget : undefined,
+                    lte: max_proposed_budget ? min_proposed_budget : undefined
                 },
                 title: {
-                    startsWith: title
+                    startsWith: title ? title : undefined
                 },
                 homologation: {
                     every: {
-                        fk_status,
-                        createdBy
+                        fk_status: fk_status ? fk_status : undefined,
+                        createdBy: createdBy ? createdBy : undefined
                     }
                 }
             },

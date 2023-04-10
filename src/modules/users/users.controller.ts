@@ -9,25 +9,24 @@ import {
   Request,
   UseGuards
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserService } from './services/createUser.service';
-import { FindUserService } from './services/findUser.service';
-import { ListUsersService } from './services/listUser.service';
-import { UpdateUserService } from './services/updateUser.service';
-import { RolesGuard } from '../authentication/guards/roles.guard';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../authentication/decorators/roles.decorator';
 import { roles } from '../authentication/enum/roles.enum';
-import { DeleteUserService } from './services/deleteUser.service';
-import { UpdatePasswordDTO } from './dto/update-password.dto';
-import { UpdatePasswordFirstAccessService } from './services/updatePasswordFirstAccess.service';
-import { UserPayload } from '../authentication/dto/user-payload.dto';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
+import { RolesGuard } from '../authentication/guards/roles.guard';
+import { CreateUserDto } from './dto/create-user.dto';
 import { ListUserDto } from './dto/list-user.dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { UpdatePasswordDTO } from './dto/update-password.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserService } from './services/createUser.service';
+import { DeleteUserService } from './services/deleteUser.service';
+import { FindUserService } from './services/findUser.service';
+import { ListUsersService } from './services/listUser.service';
+import { UpdatePasswordFirstAccessService } from './services/updatePasswordFirstAccess.service';
+import { UpdateUserService } from './services/updateUser.service';
+import { LocalAuthGuard } from '../authentication/guards/local-auth.guard';
 
 @ApiTags('users')
-@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(
@@ -39,6 +38,7 @@ export class UsersController {
     private readonly updatePasswordFirstAccessService: UpdatePasswordFirstAccessService
   ) { }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Filtra usuários', description: "Filtra usuários por nome, email,id e nivel de acesso" })
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -47,14 +47,14 @@ export class UsersController {
     return this.findUserService.execute({ id, email, fk_roles, name });
   }
 
+  @UseGuards(LocalAuthGuard)
   @ApiOperation({ summary: 'Alterar senha' })
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Put('/password')
-  updatePassword(@Request() req, @Body() { actual_password, new_password }: UpdatePasswordDTO) {
-    const user: UserPayload = req.user
-    return this.updatePasswordFirstAccessService.execute(user, { actual_password, new_password })
+  updatePassword(@Body() { email, password, new_password }: UpdatePasswordDTO) {
+    return this.updatePasswordFirstAccessService.execute({ email, password, new_password })
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Atualiza um usuário' })
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -63,6 +63,7 @@ export class UsersController {
     return this.updateUserService.execute(id, updateUserDto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Deleta um usuário' })
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -71,6 +72,7 @@ export class UsersController {
     return this.deleteUserService.execute(id)
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Lista todos os usuários' })
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -79,6 +81,7 @@ export class UsersController {
     return this.listUsersService.execute();
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Cria um usuário' })
   @Roles(roles.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
