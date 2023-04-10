@@ -25,7 +25,7 @@ export class CreateRoadmapService {
             }
         }
         else {
-            throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND)
+            throw new HttpException('Produtora não encontrada', HttpStatus.NOT_FOUND)
         }
         const roadmap = await this.roadmapRepository.create(createRoadmapDto)
         await this.sendEmailCreationRoadmapService.execute(user, file, roadmap)
