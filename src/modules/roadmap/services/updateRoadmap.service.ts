@@ -4,6 +4,7 @@ import { UserRepository } from "src/app/config/database/repositories/users/UserR
 import { UpdateRoadmapDto } from "../dto/update-roadmap.dto";
 import * as fs from 'fs'
 import { roles } from "src/modules/authentication/enum/roles.enum";
+import { risk } from "../enum/risk.enum";
 @Injectable()
 export class UpdateRoadmapService {
     constructor(private roadmapRepository: RoadmapRepository, private userRepository: UserRepository) { }
@@ -15,6 +16,12 @@ export class UpdateRoadmapService {
                     console.log(err)
                 }
             })
+        }
+
+        if (updateRoadmapDto.fk_risk) {
+            if (updateRoadmapDto.fk_risk != risk.high && updateRoadmapDto.fk_risk != risk.low && updateRoadmapDto.fk_risk != risk.medium) {
+                throw new HttpException('Risco não é válido. O risco precisa ser alto, baixo ou médio', HttpStatus.BAD_REQUEST)
+            }
         }
 
         const roadmap = await this.roadmapRepository.findById(id)
