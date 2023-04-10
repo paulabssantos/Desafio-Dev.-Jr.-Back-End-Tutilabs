@@ -3,6 +3,7 @@ import { RoadmapRepository } from "src/app/config/database/repositories/roadmap/
 import { UserRepository } from "src/app/config/database/repositories/users/UserRepository";
 import { UpdateRoadmapDto } from "../dto/update-roadmap.dto";
 import * as fs from 'fs'
+import { roles } from "src/modules/authentication/enum/roles.enum";
 @Injectable()
 export class UpdateRoadmapService {
     constructor(private roadmapRepository: RoadmapRepository, private userRepository: UserRepository) { }
@@ -19,7 +20,9 @@ export class UpdateRoadmapService {
         const roadmap = await this.roadmapRepository.findById(id)
 
         if (!roadmap) {
-            deleteFile(file.path)
+            if (file) {
+                deleteFile(file.path)
+            }
             throw new HttpException('Roteiro não encontrado', HttpStatus.NOT_FOUND)
         }
         if (file) {
@@ -28,18 +31,21 @@ export class UpdateRoadmapService {
         if (updateRoadmapDto.fk_producer) {
             const user = await this.userRepository.find({ id: updateRoadmapDto.fk_producer });
             if (user) {
-                if (user.fk_roles != '2') {
-                    deleteFile(file.path)
+                if (user.fk_roles != roles.Producer) {
+                    if (file) {
+                        deleteFile(file.path)
+                    }
                     throw new HttpException('Usuário precisa ser uma produtora', HttpStatus.BAD_REQUEST)
                 }
             }
             else {
-                deleteFile(file.path)
-                throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND)
+                if (file) {
+                    deleteFile(file.path)
+                }
+                throw new HttpException('Produtora informada não encontrada', HttpStatus.NOT_FOUND)
             }
         }
-        await this.roadmapRepository.update(id, updateRoadmapDto)
-
+        return await this.roadmapRepository.update(id, updateRoadmapDto)
     }
 
 }
