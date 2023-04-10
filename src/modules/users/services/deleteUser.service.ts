@@ -17,18 +17,17 @@ export class DeleteUserService {
 
         if (user.fk_roles == roles.Producer) {
             const roadmapsApprovedByProducer = await this.roadmapRepository.filter({ fk_producer: user.id, fk_status: status.approved })
-            if (roadmapsApprovedByProducer) {
+            if (roadmapsApprovedByProducer.length > 0) {
                 throw new HttpException('A produtora possui roteiros aprovados', HttpStatus.BAD_REQUEST)
             }
         } else if (user.fk_roles == roles.Screenwriter) {
             const roadmapsCreatedByScreenWriter = await this.roadmapRepository.filter({ createdBy: user.id })
-            if (roadmapsCreatedByScreenWriter) {
+            if (roadmapsCreatedByScreenWriter.length > 0) {
                 throw new HttpException('O roteirista possui roteiros criados', HttpStatus.BAD_REQUEST)
             }
         } else if (user.fk_roles == roles.Admin) {
             throw new HttpException('Não é possível deletar um usuário admin', HttpStatus.BAD_REQUEST)
         }
-
         await this.userRepository.delete(user.id)
     }
 } 
