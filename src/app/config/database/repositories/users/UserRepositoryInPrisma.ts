@@ -73,14 +73,14 @@ export class UserRepositoryInPrisma implements UserRepository {
     async filter({ id, email, fk_roles, name }: ListUserDto): Promise<Omit<User, "password">[]> {
         const data = await this.prisma.users.findMany({
             where: {
-                id,
+                id: id ? id : undefined,
                 email: {
-                    startsWith: email
+                    startsWith: email ? email : undefined
                 },
                 name: {
-                    startsWith: name
+                    startsWith: name ? name : undefined
                 },
-                fk_roles
+                fk_roles: fk_roles ? fk_roles : undefined
             },
             select: {
                 id: true,
