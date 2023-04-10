@@ -14,8 +14,6 @@ export class CreateRoadmapDto {
     @IsNotEmpty({ message: "Orçamento proposto é obrigatório" })
     proposed_budget: number;
 
-    @IsString({ message: "File precisa ser uma string" })
-    @IsNotEmpty({ message: "File é obrigatório" })
     file: string;
 
     @IsString({ message: "Id do risco precisa ser uma string" })
