@@ -32,8 +32,9 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{secrets.SSH_PASSPHRASE}}
           source: ". , !node_modules"
-          target: "desafio-tuti-backend"
-   
+          target: "~/app/desafio-tuti-backend"
+    
+      - name: Update API
       - uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -43,7 +44,7 @@ jobs:
           passphrase: ${{secrets.SSH_PASSPHRASE}}
           source: ". , !node_modules"
           script: 
-            cd /home/app/desafio-tuti-backend && docker-compose up -d mysql_sgr && pm2 restart dist/main.js 
+            cd ~/app/desafio-tuti-backend && pm2 restart main 
                
           
           
