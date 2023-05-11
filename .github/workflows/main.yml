@@ -30,7 +30,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          passphrase: ${{secrets.SSH_PASSPHRASE}}
           source: ". , !node_modules"
           target: "~/app/desafio-tuti-backend"
           
@@ -41,7 +40,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          passphrase: ${{secrets.SSH_PASSPHRASE}}
           script: 
             cd ~/app/desafio-tuti-backend
             pm2 restart main 
