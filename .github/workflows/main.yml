@@ -2,12 +2,12 @@ name: CI
 
 on:
   push: 
-    branches: [ main ]
+    branches: [ main, master ]
   
   workflow_dispatch: 
   
 jobs:
-  build:
+  deploy-dev:
     runs-on: ubuntu-latest
     environment:
       name: dev
@@ -43,7 +43,43 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: 
             cd ~/app/desafio-tuti-backend && pm2 restart main 
-               
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    environment:
+      name: prod
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with: 
+          node-version: 20.x
+          
+      - name: Install Dependencies
+        run: npm install
+      
+      - name: Build
+        run: npm run build
+        
+      - uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ". , !node_modules"
+          target: "~/app/desafio-tuti-backend"
+          
+      - name : Update API
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: 
+            cd ~/app/desafio-tuti-backend && pm2 restart main          
           
           
           
