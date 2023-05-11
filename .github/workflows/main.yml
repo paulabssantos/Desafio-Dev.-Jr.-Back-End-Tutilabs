@@ -32,18 +32,19 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{secrets.SSH_PASSPHRASE}}
           source: ". , !node_modules"
-          target: "~/app/desafio-tuti-backend"
-    
-      - uses: appleboy/ssh-action@master
+          target: "~/app/api-desafio-tuti"
+          
+      - name : Update API
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{secrets.SSH_PASSPHRASE}}
-          source: ". , !node_modules"
           script: 
-            cd ~/app/desafio-tuti-backend && pm2 restart main 
+            cd ~/app/api-desafio-tuti 
+            pm2 restart main 
                
           
           
