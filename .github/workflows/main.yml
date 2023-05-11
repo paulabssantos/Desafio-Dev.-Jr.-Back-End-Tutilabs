@@ -24,7 +24,6 @@ jobs:
       - name: Build
         run: npm run build
         
-      - name: Cria Pasta 
       - uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -41,8 +40,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: ". , !node_modules"
-          script:
-            cd /home/app/desafio-tuti-backend/dist && npm run build && docker-compose up -d mysql_sgr && pm2 restart main.js    
+          script: cd /home/app/desafio-tuti-backend/dist && npm run build && docker-compose up -d mysql_sgr && pm2 restart main.js 
+               
           
           
           
