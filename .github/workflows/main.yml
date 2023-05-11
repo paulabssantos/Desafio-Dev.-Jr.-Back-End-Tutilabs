@@ -30,6 +30,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          passphrase: ${{secrest.SSH_PASSPHRASE}}
           source: ". , !node_modules"
           target: "desafio-tuti-backend"
    
@@ -39,6 +40,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          passphrase: ${{secrest.SSH_PASSPHRASE}}
           source: ". , !node_modules"
           script: cd /home/app/desafio-tuti-backend/dist && npm run build && docker-compose up -d mysql_sgr && pm2 restart main.js 
                
