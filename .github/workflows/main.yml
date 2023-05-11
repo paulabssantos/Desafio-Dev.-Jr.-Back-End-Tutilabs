@@ -41,8 +41,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: 
-            cd ~/app/desafio-tuti-backend
-            pm2 restart main 
+            cd ~/app/desafio-tuti-backend && pm2 restart main 
                
           
           
