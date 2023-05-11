@@ -2,7 +2,7 @@ name: CI
 
 on:
   push: 
-    branches: [ main, master ]
+    branches: [ main ]
   
   workflow_dispatch: 
   
@@ -48,6 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: prod
+    needs: deploy-dev
     steps:
       - uses: actions/checkout@v2
       
