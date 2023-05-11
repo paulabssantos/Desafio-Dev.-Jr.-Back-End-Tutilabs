@@ -34,7 +34,6 @@ jobs:
           source: ". , !node_modules"
           target: "~/app/desafio-tuti-backend"
     
-      - name: Update API
       - uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
