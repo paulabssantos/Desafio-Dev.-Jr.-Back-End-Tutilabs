@@ -32,7 +32,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{secrets.SSH_PASSPHRASE}}
           source: ". , !node_modules"
-          target: "~/app/api-desafio-tuti"
+          target: "~/app/desafio-tuti-backend"
           
       - name : Update API
         uses: appleboy/ssh-action@master
@@ -43,7 +43,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{secrets.SSH_PASSPHRASE}}
           script: 
-            cd ~/app/api-desafio-tuti 
+            cd ~/app/desafio-tuti-backend
             pm2 restart main 
                
           
